@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <header>
-      <div className="bg-background border-b text-primary h-16 items-center">
+      <div className="border-b text-primary h-16 items-center">
         <div className="h-16 px-6 flex mx-auto max-w-5xl justify-between items-center">
           <div className="text-xl font-bold">{t(language, "appName")}</div>
           <nav className="">

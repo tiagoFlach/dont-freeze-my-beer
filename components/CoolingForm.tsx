@@ -34,7 +34,7 @@ import { useLanguage } from "@/components/language-provider";
 
 const formSchema = z.object({
   drinkType: z.enum(["beer", "wine", "spirits"]),
-  initialTemp: z.coerce.number().min(0).max(40),
+  initialTemp: z.number().min(0).max(40),
   material: z.enum(["glass", "aluminum", "plastic"]),
   size: z.enum(["small", "medium", "large"]),
   method: z.enum(["fridge", "freezer"]),
@@ -67,7 +67,8 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
     if (form.formState.isValid) {
       onCalculate({
         drinkType,
-        initialTemp,
+        initialTemp:
+          typeof initialTemp === "number" ? initialTemp : Number(initialTemp),
         material,
         size,
         method,
@@ -135,8 +136,18 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                     <FormControl>
                       <Input
                         type="number"
-                        {...field}
-                        className="bg-background/50"
+                        value={
+                          typeof field.value === "number" ||
+                          typeof field.value === "string"
+                            ? field.value
+                            : ""
+                        }
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
                       />
                     </FormControl>
                     <FormMessage />
@@ -155,7 +166,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-background/50">
+                        <SelectTrigger>
                           <SelectValue
                             placeholder={t(language, "formSizePlaceholder")}
                           />
