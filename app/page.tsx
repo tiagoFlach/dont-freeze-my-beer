@@ -3,10 +3,20 @@
 import { useState, useCallback } from "react";
 import { CoolingForm } from "@/components/CoolingForm";
 import { CoolingChart } from "@/components/CoolingChart";
+import { ResultStatsCards } from "@/components/ResultStatsCards";
 import { CoolingParams, generateCoolingData, DRINK_TYPES } from "@/lib/cooling";
 import { Thermometer, Clock, Snowflake } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
 import { t } from "@/lib/i18n";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardAction,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function Home() {
   const [coolingResult, setCoolingResult] = useState<ReturnType<
@@ -24,12 +34,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black text-white p-4 md:p-8 font-[family-name:var(--font-geist-sans)]">
+    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black text-white p-4 md:p-8 mb-16 font-[family-name:var(--font-geist-sans)]">
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Hero Section */}
-        <section className="text-center space-y-4 pt-8 animate-in fade-in slide-in-from-top-4 duration-1000">
-          <div className="inline-flex items-center justify-center p-3 bg-primary/20 rounded-full mb-4 border border-primary/30 backdrop-blur-sm">
-            <Snowflake className="w-8 h-8 text-primary animate-pulse" />
+        <section className="text-center space-y-4 pt-8 mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
+          <div className="inline-flex items-center justify-center mb-4">
+            <Snowflake className="w-16 h-16 snowflake-color-shift animate-pulse" />
           </div>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-white">
             {t(language, "heroTitle")}
@@ -58,38 +68,40 @@ export default function Home() {
 
             {coolingResult && currentParams && (
               <div className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-card/40 backdrop-blur-sm p-6 rounded-2xl border border-primary/20 flex flex-col items-center justify-center text-center">
-                    <span className="text-slate-400 text-sm uppercase tracking-wider mb-1">
-                      {t(language, "estimatedTime")}
-                    </span>
-                    <span className="text-5xl font-black text-primary">
-                      {coolingResult.timeToIdeal}
-                      <span className="text-xl ml-1">
-                        {t(language, "minutesShort")}
-                      </span>
-                    </span>
-                  </div>
-                  <div className="bg-card/40 backdrop-blur-sm p-6 rounded-2xl border border-primary/20 flex flex-col items-center justify-center text-center">
-                    <span className="text-slate-400 text-sm uppercase tracking-wider mb-1">
-                      {t(language, "targetTemp")}
-                    </span>
-                    <span className="text-5xl font-black text-blue-400">
-                      {DRINK_TYPES[currentParams.drinkType].idealTemp}
-                      <span className="text-xl ml-1">°C</span>
-                    </span>
-                  </div>
-                </div>
-
-                <CoolingChart
-                  data={coolingResult.data}
+                <ResultStatsCards
+                  language={language}
                   timeToIdeal={coolingResult.timeToIdeal}
                   idealTemp={DRINK_TYPES[currentParams.drinkType].idealTemp}
                 />
 
-                <p className="text-sm text-slate-500 text-center italic">
-                  {t(language, "footnoteLine1")} {t(language, "footnoteLine2")}
-                </p>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{t(language, "chartTitle")}</CardTitle>
+                    <CardAction>
+                      <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/20 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+                        {t(language, "chartIdealLabel")}{" "}
+                        {DRINK_TYPES[currentParams.drinkType].idealTemp}°C
+                      </span>
+                    </CardAction>
+                    <CardDescription>
+                      {t(language, "chartIdealBadge", {
+                        temp: DRINK_TYPES[currentParams.drinkType].idealTemp,
+                        time: coolingResult.timeToIdeal,
+                      })}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <CoolingChart
+                      data={coolingResult.data}
+                      timeToIdeal={coolingResult.timeToIdeal}
+                      idealTemp={DRINK_TYPES[currentParams.drinkType].idealTemp}
+                    />
+                  </CardContent>
+                  <CardFooter className="justify-center text-sm text-foreground-muted text-center italic">
+                    {t(language, "footnoteLine1")}{" "}
+                    {t(language, "footnoteLine2")}
+                  </CardFooter>
+                </Card>
               </div>
             )}
 

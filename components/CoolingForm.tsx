@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DRINK_TYPES,
   CONTAINER_MATERIALS,
@@ -85,167 +85,174 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
 
   return (
     <Form {...form}>
-      <form className="space-y-6 bg-card/50 backdrop-blur-md p-6 rounded-2xl border shadow-xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="drinkType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t(language, "formDrinkTypeLabel")}</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="bg-background/50">
-                      <SelectValue
-                        placeholder={t(language, "formDrinkTypePlaceholder")}
+      <Card>
+        <CardContent>
+          <form className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="drinkType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t(language, "formDrinkTypeLabel")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={t(
+                              language,
+                              "formDrinkTypePlaceholder",
+                            )}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.entries(DRINK_TYPES).map(([key]) => (
+                          <SelectItem key={key} value={key}>
+                            {
+                              optionLabels.drinkType[
+                                key as keyof typeof optionLabels.drinkType
+                              ][language]
+                            }
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="initialTemp"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t(language, "formInitialTempLabel")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        className="bg-background/50"
                       />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.entries(DRINK_TYPES).map(([key]) => (
-                      <SelectItem key={key} value={key}>
-                        {
-                          optionLabels.drinkType[
-                            key as keyof typeof optionLabels.drinkType
-                          ][language]
-                        }
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="initialTemp"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t(language, "formInitialTempLabel")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    className="bg-background/50"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <FormField
+                control={form.control}
+                name="size"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t(language, "formSizeLabel")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-background/50">
+                          <SelectValue
+                            placeholder={t(language, "formSizePlaceholder")}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.entries(CONTAINER_SIZES).map(([key]) => (
+                          <SelectItem key={key} value={key}>
+                            {
+                              optionLabels.size[
+                                key as keyof typeof optionLabels.size
+                              ][language]
+                            }
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="size"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t(language, "formSizeLabel")}</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="bg-background/50">
-                      <SelectValue
-                        placeholder={t(language, "formSizePlaceholder")}
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.entries(CONTAINER_SIZES).map(([key]) => (
-                      <SelectItem key={key} value={key}>
-                        {
-                          optionLabels.size[
-                            key as keyof typeof optionLabels.size
-                          ][language]
-                        }
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="material"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>{t(language, "formMaterialLabel")}</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-col space-y-1"
-                  >
-                    {Object.entries(CONTAINER_MATERIALS).map(([key]) => (
-                      <FormItem
-                        key={key}
-                        className="flex items-center space-x-3 space-y-0"
+              <FormField
+                control={form.control}
+                name="material"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>{t(language, "formMaterialLabel")}</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
                       >
-                        <FormControl>
-                          <RadioGroupItem value={key} />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {
-                            optionLabels.material[
-                              key as keyof typeof optionLabels.material
-                            ][language]
-                          }
-                        </FormLabel>
-                      </FormItem>
-                    ))}
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                        {Object.entries(CONTAINER_MATERIALS).map(([key]) => (
+                          <FormItem
+                            key={key}
+                            className="flex items-center space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <RadioGroupItem value={key} />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {
+                                optionLabels.material[
+                                  key as keyof typeof optionLabels.material
+                                ][language]
+                              }
+                            </FormLabel>
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="method"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>{t(language, "formMethodLabel")}</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-col space-y-1"
-                  >
-                    {Object.entries(COOLING_METHODS).map(([key]) => (
-                      <FormItem
-                        key={key}
-                        className="flex items-center space-x-3 space-y-0"
+              <FormField
+                control={form.control}
+                name="method"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>{t(language, "formMethodLabel")}</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
                       >
-                        <FormControl>
-                          <RadioGroupItem value={key} />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {
-                            optionLabels.method[
-                              key as keyof typeof optionLabels.method
-                            ][language]
-                          }
-                        </FormLabel>
-                      </FormItem>
-                    ))}
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-      </form>
+                        {Object.entries(COOLING_METHODS).map(([key]) => (
+                          <FormItem
+                            key={key}
+                            className="flex items-center space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <RadioGroupItem value={key} />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {
+                                optionLabels.method[
+                                  key as keyof typeof optionLabels.method
+                                ][language]
+                              }
+                            </FormLabel>
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </Form>
   );
 }

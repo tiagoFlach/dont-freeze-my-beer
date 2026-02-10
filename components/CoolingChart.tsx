@@ -29,111 +29,88 @@ export function CoolingChart({
   const { language } = useLanguage();
 
   return (
-    <Card className="w-full bg-card/50 backdrop-blur-md shadow-xl border overflow-hidden">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold flex items-center justify-between">
-          <span>{t(language, "chartTitle")}</span>
-          <span className="text-primary font-mono bg-primary/10 px-3 py-1 rounded-full text-sm">
-            {t(language, "chartIdealBadge", {
-              temp: idealTemp,
-              time: timeToIdeal,
-            })}
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="h-[300px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={data}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            >
-              <defs>
-                <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="var(--primary)"
-                    stopOpacity={0.1}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="var(--primary)"
-                    stopOpacity={0}
-                  />
-                </linearGradient>
-              </defs>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                vertical={false}
-                stroke="hsl(var(--muted-foreground) / 0.2)"
-              />
-              <XAxis
-                dataKey="time"
-                label={{
-                  value: t(language, "chartXAxis"),
-                  position: "insideBottomRight",
-                  offset: -5,
-                }}
-                stroke="hsl(var(--muted-foreground))"
-                fontSize={12}
-              />
-              <YAxis
-                label={{
-                  value: t(language, "chartYAxis"),
-                  angle: -90,
-                  position: "insideLeft",
-                }}
-                stroke="hsl(var(--muted-foreground))"
-                fontSize={12}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "hsl(var(--card))",
-                  borderColor: "hsl(var(--border))",
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                }}
-                itemStyle={{ color: "var(--primary)" }}
-                labelFormatter={(label) =>
-                  `${label} ${t(language, "chartTooltipMin")}`
-                }
-              />
+    <div className="w-full h-96">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={data}
+          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        >
+          <defs>
+            <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.1} />
+              <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid
+            strokeDasharray="3 3"
+            vertical={false}
+            stroke="hsl(var(--muted-foreground) / 0.2)"
+          />
+          <XAxis
+            dataKey="time"
+            label={{
+              value: t(language, "chartXAxis"),
+              position: "insideBottomRight",
+              offset: -5,
+            }}
+            stroke="hsl(var(--muted-foreground))"
+            fontSize={12}
+          />
+          <YAxis
+            label={{
+              value: t(language, "chartYAxis"),
+              angle: -90,
+              position: "insideLeft",
+            }}
+            stroke="hsl(var(--muted-foreground))"
+            fontSize={12}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "hsl(var(--card))",
+              borderColor: "hsl(var(--border))",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+            itemStyle={{ color: "var(--primary)" }}
+            labelFormatter={(label) =>
+              `${label} ${t(language, "chartTooltipMin")}`
+            }
+          />
 
-              {/* Highlight target area */}
-              <ReferenceLine
-                y={idealTemp}
-                stroke="hsl(var(--primary))"
-                strokeDasharray="3 3"
-                label={{
-                  value: t(language, "chartIdealLabel"),
-                  position: "right",
-                  fill: "var(--primary)",
-                  fontSize: 12,
-                }}
-              />
-              <ReferenceLine
-                x={timeToIdeal}
-                stroke="hsl(var(--primary))"
-                strokeDasharray="3 3"
-              />
+          {/* Highlight target area */}
+          <ReferenceLine
+            y={idealTemp}
+            stroke="hsl(var(--primary))"
+            strokeDasharray="3 3"
+            label={{
+              value: t(language, "chartIdealLabel"),
+              position: "right",
+              fill: "var(--primary)",
+              fontSize: 12,
+            }}
+          />
+          <ReferenceLine
+            x={timeToIdeal}
+            stroke="hsl(var(--primary))"
+            strokeDasharray="3 3"
+          />
 
-              <Line
-                type="monotone"
-                dataKey="temp"
-                stroke="hsl(var(--primary))"
-                strokeWidth={3}
-                dot={{ fill: "hsl(var(--primary))", r: 4 }}
-                activeDot={{
-                  r: 6,
-                  stroke: "hsl(var(--background))",
-                  strokeWidth: 2,
-                }}
-                animationDuration={1500}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </CardContent>
-    </Card>
+          <Line
+            type="monotone"
+            dataKey="temp"
+            stroke="hsl(var(--primary))"
+            strokeWidth={3}
+            dot={{ fill: "hsl(var(--primary))", r: 4 }}
+            activeDot={{
+              r: 6,
+              stroke: "hsl(var(--background))",
+              strokeWidth: 2,
+            }}
+            animationDuration={1500}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 }

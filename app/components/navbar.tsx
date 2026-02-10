@@ -17,8 +17,8 @@ export default function Navbar() {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <header className="mb-6">
-      <div className="bg-background border-b border-neutral-800 text-neutral-100 h-16 items-center">
+    <header>
+      <div className="bg-background border-b text-primary h-16 items-center">
         <div className="h-16 px-6 flex mx-auto max-w-5xl justify-between items-center">
           <div className="text-xl font-bold">{t(language, "appName")}</div>
           <nav className="">
@@ -39,8 +39,8 @@ export default function Navbar() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="en">English</SelectItem>
-                    <SelectItem value="pt">Portugues</SelectItem>
-                    <SelectItem value="es">Espanol</SelectItem>
+                    <SelectItem value="pt">Português</SelectItem>
+                    <SelectItem value="es">Español</SelectItem>
                   </SelectContent>
                 </Select>
               </li>

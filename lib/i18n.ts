@@ -64,7 +64,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     },
     pt: {
         appName: "Don't Freeze My Beer",
-        heroTitle: "Não Congele sua Cerveja",
+        heroTitle: "Não Congele Sua Cerveja",
         heroSubtitle:
             "Calcule o tempo exato para sua bebida chegar na temperatura ideal. Utilizando física real para garantir o gole perfeito.",
         sectionSettings: "Configurações",
