@@ -34,7 +34,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black text-white p-4 md:p-8 mb-16 font-[family-name:var(--font-geist-sans)]">
+    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black text-white px-3 py-6 lg:p-6 mb-16 font-[family-name:var(--font-geist-sans)]">
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Hero Section */}
         <section className="text-center space-y-4 pt-8 mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
