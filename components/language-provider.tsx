@@ -18,8 +18,6 @@ type LanguageProviderProps = {
   defaultLanguage?: Language;
 };
 
-const COOKIE_NAME = "dfmb.language";
-
 export function LanguageProvider({
   children,
   defaultLanguage = "pt",
@@ -27,8 +25,11 @@ export function LanguageProvider({
   const [language, setLanguage] = useState<Language>(defaultLanguage);
 
   useEffect(() => {
+    setLanguage(defaultLanguage);
+  }, [defaultLanguage]);
+
+  useEffect(() => {
     document.documentElement.lang = language;
-    document.cookie = `${COOKIE_NAME}=${language}; Path=/; Max-Age=31536000; SameSite=Lax`;
   }, [language]);
 
   const value = useMemo(() => ({ language, setLanguage }), [language]);

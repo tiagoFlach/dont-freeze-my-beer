@@ -10,11 +10,23 @@ import {
 } from "@/components/ui/select";
 import { Github } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "@/components/language-provider";
 import { t, type Language } from "@/lib/i18n";
 
 export default function Navbar() {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleLanguageChange = (value: Language) => {
+    const pattern = /^\/(en|pt|es)(?=\/|$)/;
+    const nextPath = pattern.test(pathname)
+      ? pathname.replace(pattern, `/${value}`)
+      : `/${value}${pathname === "/" ? "" : pathname}`;
+
+    router.push(nextPath);
+  };
 
   return (
     <header>
@@ -27,7 +39,9 @@ export default function Navbar() {
                 <Select
                   defaultValue="pt"
                   value={language}
-                  onValueChange={(value) => setLanguage(value as Language)}
+                  onValueChange={(value) =>
+                    handleLanguageChange(value as Language)
+                  }
                 >
                   <SelectTrigger
                     className="w-[140px]"
