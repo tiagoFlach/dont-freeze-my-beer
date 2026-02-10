@@ -33,7 +33,7 @@ export default function Navbar() {
   return (
     <header>
       <div className="border-b text-primary">
-        <div className="px-6 py-3 flex mx-auto max-w-5xl flex-wrap items-center gap-x-6 gap-y-2">
+        <div className="px-6 py-3 flex mx-auto max-w-5xl flex-wrap items-center gap-x-6">
           <div className="text-xl font-bold leading-tight">
             {t(language, "appName")}
           </div>
@@ -49,7 +49,13 @@ export default function Navbar() {
               {menuOpen ? <X /> : <Menu />}
             </Button>
           </div>
-          <nav className={menuOpen ? "w-full md:w-auto" : "hidden md:block"}>
+          <nav
+            className={`w-full overflow-hidden transition-[max-height,opacity] duration-200 ease-out md:w-auto md:overflow-visible md:transition-none ${
+              menuOpen
+                ? "max-h-64 opacity-100 mt-2"
+                : "max-h-0 opacity-0 pointer-events-none md:max-h-none md:opacity-100 md:pointer-events-auto"
+            }`}
+          >
             <ul className="flex w-full items-center justify-end gap-3 md:w-auto">
               <li>
                 <Select
