@@ -5,6 +5,7 @@ import { CoolingForm } from "@/components/CoolingForm";
 import { CoolingChart } from "@/components/CoolingChart";
 import { ResultStatsCards } from "@/components/ResultStatsCards";
 import { FormulaCard } from "@/components/FormulaCard";
+import { SectionTitle } from "@/components/SectionTitle";
 import { CoolingParams, generateCoolingData, DRINK_TYPES } from "@/lib/cooling";
 import { Thermometer, Clock, Snowflake } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
@@ -53,19 +54,17 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Form Column */}
           <div className="lg:col-span-6 space-y-6 animate-in fade-in slide-in-from-left-4 duration-700 delay-200">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Thermometer className="w-6 h-6 text-primary" />
+            <SectionTitle icon={Thermometer}>
               {t(language, "sectionSettings")}
-            </h2>
+            </SectionTitle>
             <CoolingForm onCalculate={handleCalculate} />
           </div>
 
           {/* Result Column */}
           <div className="lg:col-span-6 space-y-6 animate-in fade-in slide-in-from-right-4 duration-700 delay-400">
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Clock className="w-6 h-6 text-primary" />
+            <SectionTitle icon={Clock}>
               {t(language, "sectionResult")}
-            </h2>
+            </SectionTitle>
 
             {coolingResult && currentParams && (
               <div className="space-y-6">
