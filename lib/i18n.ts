@@ -28,7 +28,12 @@ type TranslationKey =
     | "languageSelectPlaceholder"
     | "themeToggleLabel"
     | "githubLabel"
-    | "minutesShort";
+    | "minutesShort"
+    | "formulaTitle"
+    | "formulaSubtitle"
+    | "formulaDescriptionT"
+    | "formulaDescriptionTk"
+    | "idealTempsTitle";
 
 const translations: Record<Language, Record<TranslationKey, string>> = {
     en: {
@@ -61,6 +66,11 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         themeToggleLabel: "Toggle theme",
         githubLabel: "Open GitHub",
         minutesShort: "min",
+        formulaTitle: "How it works",
+        formulaSubtitle: "The science behind the perfect temperature",
+        formulaDescriptionT: "T(t) = Temperature at time t",
+        formulaDescriptionTk: "k = Cooling constant (material × size)",
+        idealTempsTitle: "Ideal Temperatures",
     },
     pt: {
         appName: "Don't Freeze My Beer",
@@ -92,6 +102,11 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         themeToggleLabel: "Alternar tema",
         githubLabel: "Abrir GitHub",
         minutesShort: "min",
+        formulaTitle: "Como funciona",
+        formulaSubtitle: "A ciência por trás da temperatura perfeita",
+        formulaDescriptionT: "T(t) = Temperatura no tempo t",
+        formulaDescriptionTk: "k = Constante de resfriamento (material × tamanho)",
+        idealTempsTitle: "Temperaturas Ideais",
     },
     es: {
         appName: "Don't Freeze My Beer",
@@ -123,6 +138,11 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         themeToggleLabel: "Cambiar tema",
         githubLabel: "Abrir GitHub",
         minutesShort: "min",
+        formulaTitle: "Cómo funciona",
+        formulaSubtitle: "La ciencia detrás de la temperatura perfecta",
+        formulaDescriptionT: "T(t) = Temperatura en el tiempo t",
+        formulaDescriptionTk: "k = Constante de enfriamiento (material × tamaño)",
+        idealTempsTitle: "Temperaturas Ideales",
     },
 };
 

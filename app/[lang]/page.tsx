@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { CoolingForm } from "@/components/CoolingForm";
 import { CoolingChart } from "@/components/CoolingChart";
 import { ResultStatsCards } from "@/components/ResultStatsCards";
+import { FormulaCard } from "@/components/FormulaCard";
 import { CoolingParams, generateCoolingData, DRINK_TYPES } from "@/lib/cooling";
 import { Thermometer, Clock, Snowflake } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
@@ -111,6 +112,11 @@ export default function Home() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Formula Section - Full Width */}
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+          <FormulaCard language={language} />
         </div>
       </div>
     </main>
