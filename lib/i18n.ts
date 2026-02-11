@@ -138,9 +138,14 @@ export const optionLabels = {
         plastic: { en: "Plastic", pt: "Plastico", es: "Plastico" },
     },
     size: {
-        small: { en: "Small (350ml)", pt: "Pequeno (350ml)", es: "Pequeno (350ml)" },
-        medium: { en: "Medium (600ml)", pt: "Medio (600ml)", es: "Medio (600ml)" },
-        large: { en: "Large (1L+)", pt: "Grande (1L+)", es: "Grande (1L+)" },
+        "330": { en: "330ml", pt: "330ml", es: "330ml" },
+        "350": { en: "350ml", pt: "350ml", es: "350ml" },
+        "473": { en: "473ml", pt: "473ml", es: "473ml" },
+        "500": { en: "500ml", pt: "500ml", es: "500ml" },
+        "750": { en: "750ml", pt: "750ml", es: "750ml" },
+        "1000": { en: "1 L", pt: "1 L", es: "1 L" },
+        "1500": { en: "1.5 L", pt: "1,5 L", es: "1,5 L" },
+        "2000": { en: "2 L", pt: "2 L", es: "2 L" },
     },
     method: {
         fridge: { en: "Fridge", pt: "Geladeira", es: "Nevera" },

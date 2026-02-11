@@ -25,24 +25,53 @@ export const COOLING_METHODS = {
 };
 
 // Simplified volume multiplier
+// Smaller volume = faster cooling = higher multiplier
 export const CONTAINER_SIZES = {
-    small: { mult: 1.1 },
-    medium: { mult: 1.0 },
-    large: { mult: 0.8 },
+    beer: {
+        "330": { mult: 1.12 },
+        "350": { mult: 1.1 },
+        "473": { mult: 1.05 },
+        "500": { mult: 1.02 },
+        "750": { mult: 0.9 },
+        "1000": { mult: 0.8 },
+        "1500": { mult: 0.7 },
+        "2000": { mult: 0.6 },
+    },
+    wine: {
+        "350": { mult: 1.1 },
+        "473": { mult: 1.05 },
+        "500": { mult: 1.02 },
+        "750": { mult: 0.9 },
+        "1000": { mult: 0.8 },
+        "1500": { mult: 0.7 },
+    },
+    spirits: {
+        "350": { mult: 1.1 },
+        "500": { mult: 1.02 },
+        "750": { mult: 0.9 },
+        "1000": { mult: 0.8 },
+        "1500": { mult: 0.7 },
+    },
 };
 
 export interface CoolingParams {
     drinkType: keyof typeof DRINK_TYPES;
     initialTemp: number;
     material: keyof typeof CONTAINER_MATERIALS;
-    size: keyof typeof CONTAINER_SIZES;
+    size: string; // Size key depends on drinkType
     method: keyof typeof COOLING_METHODS;
 }
 
 export const calculateK = (params: CoolingParams) => {
     const baseK = DRINK_TYPES[params.drinkType].kBase;
     const materialMult = CONTAINER_MATERIALS[params.material].mult;
-    const sizeMult = CONTAINER_SIZES[params.size].mult;
+
+    // Get size multiplier safely
+    const drinkSizes = CONTAINER_SIZES[params.drinkType] as Record<string, { mult: number }>;
+    const sizeData = drinkSizes[params.size];
+
+    // Fallback if size not found (shouldn't happen with correct form)
+    const sizeMult = sizeData ? sizeData.mult : 1.0;
 
     // k is higher (faster cooling) for aluminum and smaller containers
     return baseK * materialMult * sizeMult;

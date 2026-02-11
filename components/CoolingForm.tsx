@@ -42,7 +42,7 @@ const formSchema = z.object({
   drinkType: z.enum(["beer", "wine", "spirits"]),
   initialTemp: z.number().min(0).max(40),
   material: z.enum(["glass", "aluminum", "plastic"]),
-  size: z.enum(["small", "medium", "large"]),
+  size: z.string(),
   method: z.enum(["fridge", "freezer"]),
 });
 
@@ -63,7 +63,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
       drinkType: "beer",
       initialTemp: 25,
       material: "aluminum",
-      size: "small",
+      size: "350",
       method: "freezer",
     },
   });
@@ -97,7 +97,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
               className="pr-12"
               value={
                 typeof field.value === "number" ||
-                typeof field.value === "string"
+                  typeof field.value === "string"
                   ? field.value
                   : ""
               }
@@ -134,7 +134,17 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
     method,
     onCalculate,
     form.formState.isValid,
+    form.formState.isValid,
   ]);
+
+  // Reset size when drink type changes
+  useEffect(() => {
+    const availableSizes = Object.keys(CONTAINER_SIZES[drinkType as keyof typeof CONTAINER_SIZES]);
+    // If current size is not valid for new drink type, select the first available one
+    if (!availableSizes.includes(size)) {
+      form.setValue("size", availableSizes[0]);
+    }
+  }, [drinkType, form, size]);
 
   return (
     <Form {...form}>
@@ -170,7 +180,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                           <SelectItem key={key} value={key}>
                             {
                               optionLabels.drinkType[
-                                key as keyof typeof optionLabels.drinkType
+                              key as keyof typeof optionLabels.drinkType
                               ][language]
                             }
                           </SelectItem>
@@ -214,12 +224,10 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Object.entries(CONTAINER_SIZES).map(([key]) => (
+                        {Object.entries(CONTAINER_SIZES[drinkType as keyof typeof CONTAINER_SIZES] || {}).map(([key]) => (
                           <SelectItem key={key} value={key}>
                             {
-                              optionLabels.size[
-                                key as keyof typeof optionLabels.size
-                              ][language]
+                              (optionLabels.size as any)[key]?.[language] || key
                             }
                           </SelectItem>
                         ))}
@@ -253,7 +261,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                             <FormLabel className="font-normal">
                               {
                                 optionLabels.material[
-                                  key as keyof typeof optionLabels.material
+                                key as keyof typeof optionLabels.material
                                 ][language]
                               }
                             </FormLabel>
@@ -289,7 +297,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                             <FormLabel className="font-normal">
                               {
                                 optionLabels.method[
-                                  key as keyof typeof optionLabels.method
+                                key as keyof typeof optionLabels.method
                                 ][language]
                               }
                             </FormLabel>
