@@ -1,9 +1,15 @@
 import Navbar from "../components/navbar";
 import { LanguageProvider } from "@/components/language-provider";
-import type { Language } from "@/lib/i18n";
+import { SUPPORTED_LANGUAGES, t, type Language } from "@/lib/i18n";
+import { getSiteUrl } from "@/lib/site";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-const LANGUAGES: Language[] = ["pt", "en", "es"];
+const LOCALE_MAP: Record<Language, string> = {
+  pt: "pt_BR",
+  en: "en_US",
+  es: "es_ES",
+};
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -11,7 +17,46 @@ type LayoutProps = {
 };
 
 export function generateStaticParams() {
-  return LANGUAGES.map((lang) => ({ lang }));
+  return SUPPORTED_LANGUAGES.map((lang) => ({ lang }));
+}
+
+type MetadataProps = {
+  params: { lang: string };
+};
+
+export function generateMetadata({ params }: MetadataProps): Metadata {
+  const language = SUPPORTED_LANGUAGES.includes(params.lang as Language)
+    ? (params.lang as Language)
+    : "pt";
+  const baseUrl = getSiteUrl();
+  const canonical = new URL(`/${language}`, baseUrl).toString();
+
+  return {
+    title: t(language, "metaTitle"),
+    description: t(language, "metaDescription"),
+    keywords: t(language, "metaKeywords").split(", "),
+    alternates: {
+      canonical,
+      languages: {
+        pt: new URL("/pt", baseUrl).toString(),
+        en: new URL("/en", baseUrl).toString(),
+        es: new URL("/es", baseUrl).toString(),
+      },
+    },
+    openGraph: {
+      type: "website",
+      url: canonical,
+      locale: LOCALE_MAP[language],
+      siteName: t(language, "appName"),
+      title: t(language, "metaTitle"),
+      description: t(language, "metaDescription"),
+    },
+    twitter: {
+      card: "summary",
+      title: t(language, "metaTitle"),
+      description: t(language, "metaDescription"),
+    },
+  };
 }
 
 export default async function LanguageLayout({
@@ -19,7 +64,7 @@ export default async function LanguageLayout({
   params,
 }: LayoutProps) {
   const { lang } = await params;
-  const language = LANGUAGES.includes(lang as Language)
+  const language = SUPPORTED_LANGUAGES.includes(lang as Language)
     ? (lang as Language)
     : null;
 

@@ -2,6 +2,9 @@ export type Language = "en" | "pt" | "es";
 
 type TranslationKey =
     | "appName"
+    | "metaTitle"
+    | "metaDescription"
+    | "metaKeywords"
     | "heroTitle"
     | "heroSubtitle"
     | "sectionSettings"
@@ -38,6 +41,11 @@ type TranslationKey =
 const translations: Record<Language, Record<TranslationKey, string>> = {
     en: {
         appName: "Don't Freeze My Beer",
+        metaTitle: "Don't Freeze My Beer | Perfect chill time calculator",
+        metaDescription:
+            "Find the exact time for your drink to reach the ideal temperature. Physics-based cooling calculator for beer, wine, and spirits.",
+        metaKeywords:
+            "beer cooling calculator, drink temperature, chill time, ideal temperature, Newton cooling, freezer time",
         heroTitle: "Don't Freeze Your Beer",
         heroSubtitle:
             "Calculate the exact time for your drink to reach the ideal temperature. Using real physics to guarantee the perfect sip.",
@@ -74,6 +82,11 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     },
     pt: {
         appName: "Don't Freeze My Beer",
+        metaTitle: "Don't Freeze My Beer | Calculadora do tempo ideal de gelar",
+        metaDescription:
+            "Descubra o tempo exato para sua bebida chegar na temperatura ideal. Calculadora de resfriamento baseada em fisica para cerveja, vinho e destilados.",
+        metaKeywords:
+            "tempo para gelar cerveja, temperatura da bebida, calculadora de resfriamento, temperatura ideal, lei de Newton",
         heroTitle: "Não Congele Sua Cerveja",
         heroSubtitle:
             "Calcule o tempo exato para sua bebida chegar na temperatura ideal. Utilizando física real para garantir o gole perfeito.",
@@ -110,6 +123,11 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     },
     es: {
         appName: "Don't Freeze My Beer",
+        metaTitle: "Don't Freeze My Beer | Calculadora de enfriamiento ideal",
+        metaDescription:
+            "Descubre el tiempo exacto para que tu bebida llegue a la temperatura ideal. Calculadora basada en fisica para cerveza, vino y destilados.",
+        metaKeywords:
+            "tiempo para enfriar cerveza, temperatura de bebida, calculadora de enfriamiento, temperatura ideal, ley de Newton",
         heroTitle: "No Congeles Tu Cerveza",
         heroSubtitle:
             "Calcula el tiempo exacto para que tu bebida llegue a la temperatura ideal. Usando física real para garantizar el sorbo perfecto.",
@@ -145,6 +163,8 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         idealTempsTitle: "Temperaturas Ideales",
     },
 };
+
+export const SUPPORTED_LANGUAGES: Language[] = ["pt", "en", "es"];
 
 export const optionLabels = {
     drinkType: {
