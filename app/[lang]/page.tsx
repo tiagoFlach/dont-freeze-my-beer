@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { CoolingForm } from "@/components/CoolingForm";
 import { CoolingChart } from "@/components/CoolingChart";
-import { ResultStatsCards } from "@/components/ResultStatsCards";
+import { ResultStatsCard } from "@/components/ResultStatsCard";
 import { FormulaCard } from "@/components/FormulaCard";
 import { SectionTitle } from "@/components/SectionTitle";
 import { CoolingParams, generateCoolingData, DRINK_TYPES } from "@/lib/cooling";
@@ -68,11 +68,20 @@ export default function Home() {
 
             {coolingResult && currentParams && (
               <div className="space-y-6">
-                <ResultStatsCards
-                  language={language}
-                  timeToIdeal={coolingResult.timeToIdeal}
-                  idealTemp={DRINK_TYPES[currentParams.drinkType].idealTemp}
-                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <ResultStatsCard
+                    label={t(language, "estimatedTime")}
+                    value={coolingResult.timeToIdeal}
+                    unit={t(language, "minutesShort")}
+                    valueClassName="text-primary"
+                  />
+                  <ResultStatsCard
+                    label={t(language, "targetTemp")}
+                    value={DRINK_TYPES[currentParams.drinkType].idealTemp}
+                    unit="°C"
+                    valueClassName="text-blue-400"
+                  />
+                </div>
 
                 <Card>
                   <CardHeader>
