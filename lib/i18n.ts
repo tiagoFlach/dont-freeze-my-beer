@@ -122,7 +122,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         formulaSubtitle: "A ciência por trás da temperatura perfeita",
         formulaDescriptionT: "T(t) = Temperatura no tempo t",
         formulaDescriptionTs:
-            "T_s = Temperatura ambiente (geladeira/freezer). Quanto mais fria, mais rapido a bebida esfria.",
+            "T_s = Temperatura ambiente (geladeira/freezer). Quanto mais fria, mais rápido a bebida esfria.",
         formulaDescriptionTk: "k = Constante de resfriamento (material × tamanho)",
         idealTempsTitle: "Temperaturas Ideais",
     },
@@ -181,7 +181,7 @@ export const optionLabels = {
     },
     material: {
         glass: { en: "Glass", pt: "Vidro", es: "Vidrio" },
-        aluminum: { en: "Can (Aluminum)", pt: "Lata (Aluminio)", es: "Lata (Aluminio)" },
+        aluminum: { en: "Can (Aluminum)", pt: "Lata (Alumínio)", es: "Lata (Alumínio)" },
         plastic: { en: "Plastic", pt: "Plastico", es: "Plastico" },
     },
     size: {

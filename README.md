@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Dont Freeze My Beer
 
-## Getting Started
+Aplicação web para estimar o tempo de resfriamento de bebidas sem passar do ponto. O projeto usa um modelo simplificado da Lei do Resfriamento de Newton, mostrando a evolução da temperatura ao longo do tempo e o tempo estimado para atingir a temperatura ideal de cada bebida.
 
-First, run the development server:
+## Funcionalidades
+
+- Calcula tempo estimado para a temperatura ideal de cerveja, vinho e destilados.
+- Considera tipo de recipiente, tamanho e método de resfriamento.
+- Exibe gráfico de resfriamento e estatísticas do resultado.
+- Suporte a idiomas via rotas por idioma.
+
+## Tecnologias
+
+- Next.js (App Router) + React 19
+- TypeScript
+- Tailwind CSS
+- Recharts
+- React Hook Form + Zod
+
+## Como rodar
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Calculo de temperatura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O calculo usa a Lei do Resfriamento de Newton:
 
-## Learn More
+$$
+T(t) = T_s + (T_0 - T_s) \cdot e^{-k t}
+$$
 
-To learn more about Next.js, take a look at the following resources:
+Onde:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- $T_s$ e a temperatura ambiente do método (geladeira ou freezer).
+- $T_0$ e a temperatura inicial da bebida.
+- $t$ e o tempo em minutos.
+- $k$ e a constante de resfriamento efetiva.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+No projeto, $k$ e calculado a partir de um valor base por tipo de bebida e multiplicadores de material e tamanho do recipiente:
 
-## Deploy on Vercel
+$$
+k = k_{base} \cdot m_{material} \cdot m_{tamanho}
+$$
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Com isso, recipientes menores e materiais mais condutivos (ex: alumínio) resultam em resfriamento mais rápido. O tempo para atingir uma temperatura alvo e calculado isolando $t$ na equação:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+$$
+t = -\frac{\ln\left(\frac{T - T_s}{T_0 - T_s}\right)}{k}
+$$
+
+Caso a temperatura alvo seja menor ou igual a $T_s$, o tempo tende ao infinito, pois a bebida nao atinge essa temperatura no método escolhido.
+
+## Scripts
+
+- `pnpm dev` inicia o servidor de desenvolvimento.
+- `pnpm build` gera o build de produção.
+- `pnpm start` inicia o servidor de produção.

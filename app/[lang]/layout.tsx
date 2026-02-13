@@ -21,12 +21,15 @@ export function generateStaticParams() {
 }
 
 type MetadataProps = {
-  params: { lang: string };
+  params: Promise<{ lang: string }>;
 };
 
-export function generateMetadata({ params }: MetadataProps): Metadata {
-  const language = SUPPORTED_LANGUAGES.includes(params.lang as Language)
-    ? (params.lang as Language)
+export async function generateMetadata({
+  params,
+}: MetadataProps): Promise<Metadata> {
+  const { lang } = await params;
+  const language = SUPPORTED_LANGUAGES.includes(lang as Language)
+    ? (lang as Language)
     : "pt";
   const baseUrl = getSiteUrl();
   const canonical = new URL(`/${language}`, baseUrl).toString();

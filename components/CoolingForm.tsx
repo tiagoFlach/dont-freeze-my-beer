@@ -23,7 +23,6 @@ import { cn } from "@/lib/utils";
 import {
   Beer,
   BottleWine,
-  FlaskConical,
   Martini,
   Package,
   Recycle,
@@ -135,7 +134,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
             <div className="space-y-2">
               <FieldLabel>{t(language, "formDrinkTypeLabel")}</FieldLabel>
               <div
-                className="grid grid-cols-2 sm:grid-cols-3 gap-2"
+                className="grid grid-cols-3 gap-2"
                 role="radiogroup"
                 aria-label={t(language, "formDrinkTypeLabel")}
               >
@@ -231,7 +230,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
             <div className="space-y-2">
               <FieldLabel>{t(language, "formMaterialLabel")}</FieldLabel>
               <div
-                className="grid grid-cols-2 sm:grid-cols-3 gap-2"
+                className="grid grid-cols-3 gap-2"
                 role="radiogroup"
                 aria-label={t(language, "formMaterialLabel")}
               >
