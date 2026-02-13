@@ -123,7 +123,9 @@
 
 @layer utilities {
   .snowflake-color-shift {
-    animation: snowflake-color 25s ease-in-out infinite;
+    animation:
+      snowflake-color 25s ease-in-out infinite,
+      snowflake-spin 48s linear infinite;
   }
 }
 
@@ -134,5 +136,14 @@
   }
   50% {
     color: #ffffff;
+  }
+}
+
+@keyframes snowflake-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

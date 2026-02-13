@@ -44,7 +44,7 @@ export default function Home() {
         {/* Hero Section */}
         <section className="text-center space-y-4 pt-8 mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
           <div className="inline-flex items-center justify-center mb-4">
-            <Snowflake className="w-16 h-16 snowflake-color-shift animate-pulse" />
+            <Snowflake className="w-16 h-16 snowflake-color-shift" />
           </div>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-white">
             {t(language, "heroTitle")}
@@ -54,7 +54,7 @@ export default function Home() {
           </p>
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Form Column */}
           <div className="lg:col-span-5 space-y-5 sm:space-y-6 animate-in fade-in slide-in-from-left-4 duration-700 delay-200">
             <SectionTitle icon={Thermometer}>
