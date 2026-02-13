@@ -37,7 +37,10 @@ type TranslationKey =
     | "formulaDescriptionT"
     | "formulaDescriptionTs"
     | "formulaDescriptionTk"
-    | "idealTempsTitle";
+    | "idealTempsTitle"
+    | "freezeAlertTitle"
+    | "freezeAlertDescription"
+    | "freezeNeverLabel";
 
 const translations: Record<Language, Record<TranslationKey, string>> = {
     en: {
@@ -82,6 +85,9 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
             "T_s = Ambient temperature (fridge/freezer). The colder it is, the faster the drink cools.",
         formulaDescriptionTk: "k = Cooling constant (material × size)",
         idealTempsTitle: "Ideal Temperatures",
+        freezeAlertTitle: "Freezing Alert",
+        freezeAlertDescription: "May freeze in {time} min",
+        freezeNeverLabel: "Not expected to freeze",
     },
     pt: {
         appName: "Don't Freeze My Beer",
@@ -125,6 +131,9 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
             "T_s = Temperatura ambiente (geladeira/freezer). Quanto mais fria, mais rápido a bebida esfria.",
         formulaDescriptionTk: "k = Constante de resfriamento (material × tamanho)",
         idealTempsTitle: "Temperaturas Ideais",
+        freezeAlertTitle: "Alerta de Congelamento",
+        freezeAlertDescription: "Pode congelar em {time} min",
+        freezeNeverLabel: "Nao deve congelar",
     },
     es: {
         appName: "Don't Freeze My Beer",
@@ -168,6 +177,9 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
             "T_s = Temperatura ambiente (nevera/congelador). Cuanto mas fria, mas rapido se enfria la bebida.",
         formulaDescriptionTk: "k = Constante de enfriamiento (material × tamaño)",
         idealTempsTitle: "Temperaturas Ideales",
+        freezeAlertTitle: "Alerta de Congelacion",
+        freezeAlertDescription: "Puede congelarse en {time} min",
+        freezeNeverLabel: "No se espera que congele",
     },
 };
 
@@ -182,7 +194,7 @@ export const optionLabels = {
     material: {
         glass: { en: "Glass", pt: "Vidro", es: "Vidrio" },
         aluminum: { en: "Can (Aluminum)", pt: "Lata (Alumínio)", es: "Lata (Alumínio)" },
-        plastic: { en: "Plastic", pt: "Plastico", es: "Plastico" },
+        plastic: { en: "Plastic", pt: "Plástico", es: "Plastico" },
     },
     size: {
         "330": { en: "330ml", pt: "330ml", es: "330ml" },

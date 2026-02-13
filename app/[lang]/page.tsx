@@ -6,8 +6,13 @@ import { CoolingChart } from "@/components/CoolingChart";
 import { ResultStatsCard } from "@/components/ResultStatsCard";
 import { FormulaCard } from "@/components/FormulaCard";
 import { SectionTitle } from "@/components/SectionTitle";
-import { CoolingParams, generateCoolingData, DRINK_TYPES } from "@/lib/cooling";
-import { Thermometer, Clock, Snowflake } from "lucide-react";
+import {
+  CoolingParams,
+  generateCoolingData,
+  DRINK_TYPES,
+  getTimeToTarget,
+} from "@/lib/cooling";
+import { Thermometer, Clock, Snowflake, AlertTriangle } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
 import { t } from "@/lib/i18n";
 import {
@@ -37,6 +42,14 @@ export default function Home() {
 
   const formatTimeLabel = (value: number) =>
     Number.isFinite(value) ? value : "∞";
+
+  const freezingTime = currentParams
+    ? getTimeToTarget(0, currentParams)
+    : Infinity;
+  const isFreezingTimeFinite = Number.isFinite(freezingTime);
+  const freezingTimeLabel = isFreezingTimeFinite
+    ? Math.round(freezingTime)
+    : "—";
 
   return (
     <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-slate-100 to-white text-foreground dark:from-blue-900 dark:via-slate-900 dark:to-black px-3 py-6 lg:p-6 mb-16 font-[family-name:var(--font-geist-sans)]">
@@ -85,6 +98,31 @@ export default function Home() {
                     valueClassName="text-blue-400"
                   />
                 </div>
+
+                {isFreezingTimeFinite && (
+                  <Card className="border-amber-500/50 bg-amber-500/10">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <AlertTriangle className="h-5 w-5 text-amber-400" />
+                        {t(language, "freezeAlertTitle")}
+                      </CardTitle>
+                      <CardDescription className="text-amber-200/80">
+                        {t(language, "freezeAlertDescription", {
+                          time: freezingTimeLabel,
+                        })}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex items-center justify-between">
+                      <div className="text-4xl font-black text-amber-400">
+                        {freezingTimeLabel}
+                        <span className="text-base ml-1">
+                          {t(language, "minutesShort")}
+                        </span>
+                      </div>
+                      <Snowflake className="h-8 w-8 text-amber-300/80" />
+                    </CardContent>
+                  </Card>
+                )}
 
                 <Card>
                   <CardHeader>
