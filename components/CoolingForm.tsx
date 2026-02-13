@@ -8,14 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
 import {
   DRINK_TYPES,
   CONTAINER_MATERIALS,
@@ -25,6 +19,18 @@ import {
 } from "@/lib/cooling";
 import { optionLabels, t } from "@/lib/i18n";
 import { useLanguage } from "@/components/language-provider";
+import { cn } from "@/lib/utils";
+import {
+  Beer,
+  BottleWine,
+  FlaskConical,
+  Martini,
+  Package,
+  Recycle,
+  Snowflake,
+  Thermometer,
+  Wine,
+} from "lucide-react";
 
 type FormState = {
   drinkType: "beer" | "wine" | "spirits";
@@ -56,6 +62,35 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
   const isValid = useMemo(() => {
     return parsedInitialTemp >= 0 && parsedInitialTemp <= 40;
   }, [parsedInitialTemp]);
+
+  const sliderValue = Number.isFinite(parsedInitialTemp)
+    ? parsedInitialTemp
+    : 0;
+
+  const optionCardClass = (selected: boolean) =>
+    cn(
+      "flex flex-col items-center gap-1 rounded-lg border border-border bg-muted/30 p-3 text-center text-sm transition",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+      "hover:border-primary/60",
+      selected && "border-primary/60 bg-primary/10 text-foreground",
+    );
+
+  const drinkIcons = {
+    beer: Beer,
+    wine: Wine,
+    spirits: Martini,
+  } as const;
+
+  const materialIcons = {
+    glass: BottleWine,
+    aluminum: Package,
+    plastic: Recycle,
+  } as const;
+
+  const methodIcons = {
+    fridge: Thermometer,
+    freezer: Snowflake,
+  } as const;
 
   useEffect(() => {
     if (isValid) {
@@ -96,70 +131,70 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
           className="space-y-6"
           onSubmit={(event) => event.preventDefault()}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-5 md:gap-6">
             <div className="space-y-2">
-              <FieldLabel htmlFor="drinkType">
-                {t(language, "formDrinkTypeLabel")}
-              </FieldLabel>
-              <Select
-                onValueChange={(value) =>
-                  setFormState((prev) => ({
-                    ...prev,
-                    drinkType: value as FormState["drinkType"],
-                  }))
-                }
-                value={formState.drinkType}
+              <FieldLabel>{t(language, "formDrinkTypeLabel")}</FieldLabel>
+              <div
+                className="grid grid-cols-2 sm:grid-cols-3 gap-2"
+                role="radiogroup"
+                aria-label={t(language, "formDrinkTypeLabel")}
               >
-                <div>
-                  <SelectTrigger id="drinkType">
-                    <SelectValue
-                      placeholder={t(language, "formDrinkTypePlaceholder")}
-                    />
-                  </SelectTrigger>
-                </div>
-                <SelectContent>
-                  {Object.entries(DRINK_TYPES).map(([key]) => (
-                    <SelectItem key={key} value={key}>
-                      {
-                        optionLabels.drinkType[
-                          key as keyof typeof optionLabels.drinkType
-                        ][language]
+                {Object.entries(DRINK_TYPES).map(([key]) => {
+                  const selected = formState.drinkType === key;
+                  const Icon = drinkIcons[key as keyof typeof drinkIcons];
+
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      className={optionCardClass(selected)}
+                      onClick={() =>
+                        setFormState((prev) => ({
+                          ...prev,
+                          drinkType: key as FormState["drinkType"],
+                        }))
                       }
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                    >
+                      <Icon className="h-5 w-5 text-primary" />
+                      <span className="text-xs text-muted-foreground">
+                        {
+                          optionLabels.drinkType[
+                            key as keyof typeof optionLabels.drinkType
+                          ][language]
+                        }
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <Field>
-              <FieldLabel htmlFor="initialTemp">
-                {t(language, "formInitialTempLabel")}
-              </FieldLabel>
-              <InputGroup>
-                <InputGroupInput
-                  id="initialTemp"
-                  type="number"
-                  inputMode="decimal"
-                  min={0}
-                  max={45}
-                  step={1}
-                  placeholder="0 - 45"
-                  className="pr-12"
-                  value={formState.initialTemp}
-                  onChange={(event) =>
-                    setFormState((prev) => ({
-                      ...prev,
-                      initialTemp: event.target.value,
-                    }))
-                  }
-                />
-                <InputGroupAddon
-                  align="inline-end"
-                  className="text-muted-foreground"
-                >
-                  °C
-                </InputGroupAddon>
-              </InputGroup>
+              <div className="flex items-center justify-between">
+                <FieldLabel htmlFor="initialTemp">
+                  {t(language, "formInitialTempLabel")}
+                </FieldLabel>
+                <span className="text-sm text-muted-foreground">
+                  {sliderValue}°C
+                </span>
+              </div>
+              <input
+                id="initialTemp"
+                type="range"
+                min={0}
+                max={40}
+                step={1}
+                value={sliderValue}
+                onChange={(event) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    initialTemp: event.target.value,
+                  }))
+                }
+                className="w-full accent-primary"
+              />
             </Field>
 
             <div className="space-y-2">
@@ -173,7 +208,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                 value={formState.size}
               >
                 <div>
-                  <SelectTrigger id="size">
+                  <SelectTrigger id="size" className="w-full">
                     <SelectValue
                       placeholder={t(language, "formSizePlaceholder")}
                     />
@@ -193,64 +228,82 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
               </Select>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               <FieldLabel>{t(language, "formMaterialLabel")}</FieldLabel>
-              <RadioGroup
-                onValueChange={(value) =>
-                  setFormState((prev) => ({
-                    ...prev,
-                    material: value as FormState["material"],
-                  }))
-                }
-                value={formState.material}
-                className="flex flex-col space-y-1"
+              <div
+                className="grid grid-cols-2 sm:grid-cols-3 gap-2"
+                role="radiogroup"
+                aria-label={t(language, "formMaterialLabel")}
               >
-                {Object.entries(CONTAINER_MATERIALS).map(([key]) => (
-                  <div
-                    key={key}
-                    className="flex items-center space-x-3 space-y-0"
-                  >
-                    <RadioGroupItem value={key} />
-                    <span className="text-sm">
-                      {
-                        optionLabels.material[
-                          key as keyof typeof optionLabels.material
-                        ][language]
+                {Object.entries(CONTAINER_MATERIALS).map(([key]) => {
+                  const selected = formState.material === key;
+                  const Icon = materialIcons[key as keyof typeof materialIcons];
+
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      className={optionCardClass(selected)}
+                      onClick={() =>
+                        setFormState((prev) => ({
+                          ...prev,
+                          material: key as FormState["material"],
+                        }))
                       }
-                    </span>
-                  </div>
-                ))}
-              </RadioGroup>
+                    >
+                      <Icon className="h-5 w-5 text-primary" />
+                      <span className="text-xs text-muted-foreground">
+                        {
+                          optionLabels.material[
+                            key as keyof typeof optionLabels.material
+                          ][language]
+                        }
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               <FieldLabel>{t(language, "formMethodLabel")}</FieldLabel>
-              <RadioGroup
-                onValueChange={(value) =>
-                  setFormState((prev) => ({
-                    ...prev,
-                    method: value as FormState["method"],
-                  }))
-                }
-                value={formState.method}
-                className="flex flex-col space-y-1"
+              <div
+                className="grid grid-cols-2 gap-2"
+                role="radiogroup"
+                aria-label={t(language, "formMethodLabel")}
               >
-                {Object.entries(COOLING_METHODS).map(([key]) => (
-                  <div
-                    key={key}
-                    className="flex items-center space-x-3 space-y-0"
-                  >
-                    <RadioGroupItem value={key} />
-                    <span className="text-sm">
-                      {
-                        optionLabels.method[
-                          key as keyof typeof optionLabels.method
-                        ][language]
+                {Object.entries(COOLING_METHODS).map(([key]) => {
+                  const selected = formState.method === key;
+                  const Icon = methodIcons[key as keyof typeof methodIcons];
+
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      className={optionCardClass(selected)}
+                      onClick={() =>
+                        setFormState((prev) => ({
+                          ...prev,
+                          method: key as FormState["method"],
+                        }))
                       }
-                    </span>
-                  </div>
-                ))}
-              </RadioGroup>
+                    >
+                      <Icon className="h-5 w-5 text-primary" />
+                      <span className="text-xs text-muted-foreground">
+                        {
+                          optionLabels.method[
+                            key as keyof typeof optionLabels.method
+                          ][language]
+                        }
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </form>

@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black text-white px-3 py-6 lg:p-6 mb-16 font-[family-name:var(--font-geist-sans)]">
-      <div className="max-w-6xl mx-auto space-y-12">
+      <div className="max-w-7xl mx-auto space-y-12">
         {/* Hero Section */}
         <section className="text-center space-y-4 pt-8 mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
           <div className="inline-flex items-center justify-center mb-4">
@@ -49,14 +49,14 @@ export default function Home() {
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-white">
             {t(language, "heroTitle")}
           </h1>
-          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto">
+          <p className="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto">
             {t(language, "heroSubtitle")}
           </p>
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-start">
           {/* Form Column */}
-          <div className="lg:col-span-6 space-y-6 animate-in fade-in slide-in-from-left-4 duration-700 delay-200">
+          <div className="lg:col-span-5 space-y-5 sm:space-y-6 animate-in fade-in slide-in-from-left-4 duration-700 delay-200">
             <SectionTitle icon={Thermometer}>
               {t(language, "sectionSettings")}
             </SectionTitle>
@@ -64,14 +64,14 @@ export default function Home() {
           </div>
 
           {/* Result Column */}
-          <div className="lg:col-span-6 space-y-6 animate-in fade-in slide-in-from-right-4 duration-700 delay-400">
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6 animate-in fade-in slide-in-from-right-4 duration-700 delay-400">
             <SectionTitle icon={Clock}>
               {t(language, "sectionResult")}
             </SectionTitle>
 
             {coolingResult && currentParams && (
               <div className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-5">
                   <ResultStatsCard
                     label={t(language, "estimatedTime")}
                     value={formatTimeLabel(coolingResult.timeToIdeal)}
