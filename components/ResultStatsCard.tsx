@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardDescription,
@@ -7,7 +9,7 @@ import {
 
 interface ResultStatsCardProps {
   label: string;
-  value: number;
+  value: number | string;
   unit: string;
   valueClassName?: string;
 }

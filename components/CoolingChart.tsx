@@ -27,13 +27,14 @@ export function CoolingChart({
   idealTemp,
 }: CoolingChartProps) {
   const { language } = useLanguage();
+  const hasFiniteTime = Number.isFinite(timeToIdeal);
 
   return (
-    <div className="w-full h-96">
+    <div className="w-full h-[420px] md:h-[460px]">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={data}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 16, right: 32, left: 12, bottom: 28 }}
         >
           <defs>
             <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
@@ -51,7 +52,7 @@ export function CoolingChart({
             label={{
               value: t(language, "chartXAxis"),
               position: "insideBottomRight",
-              offset: -5,
+              offset: -8,
             }}
             stroke="hsl(var(--muted-foreground))"
             fontSize={12}
@@ -61,6 +62,7 @@ export function CoolingChart({
               value: t(language, "chartYAxis"),
               angle: -90,
               position: "insideLeft",
+              offset: 8,
             }}
             stroke="hsl(var(--muted-foreground))"
             fontSize={12}
@@ -90,11 +92,13 @@ export function CoolingChart({
               fontSize: 12,
             }}
           />
-          <ReferenceLine
-            x={timeToIdeal}
-            stroke="hsl(var(--primary))"
-            strokeDasharray="3 3"
-          />
+          {hasFiniteTime && (
+            <ReferenceLine
+              x={timeToIdeal}
+              stroke="hsl(var(--primary))"
+              strokeDasharray="3 3"
+            />
+          )}
 
           <Line
             type="monotone"

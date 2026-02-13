@@ -35,6 +35,7 @@ type TranslationKey =
     | "formulaTitle"
     | "formulaSubtitle"
     | "formulaDescriptionT"
+    | "formulaDescriptionTs"
     | "formulaDescriptionTk"
     | "idealTempsTitle";
 
@@ -77,6 +78,8 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         formulaTitle: "How it works",
         formulaSubtitle: "The science behind the perfect temperature",
         formulaDescriptionT: "T(t) = Temperature at time t",
+        formulaDescriptionTs:
+            "T_s = Ambient temperature (fridge/freezer). The colder it is, the faster the drink cools.",
         formulaDescriptionTk: "k = Cooling constant (material × size)",
         idealTempsTitle: "Ideal Temperatures",
     },
@@ -118,6 +121,8 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         formulaTitle: "Como funciona",
         formulaSubtitle: "A ciência por trás da temperatura perfeita",
         formulaDescriptionT: "T(t) = Temperatura no tempo t",
+        formulaDescriptionTs:
+            "T_s = Temperatura ambiente (geladeira/freezer). Quanto mais fria, mais rapido a bebida esfria.",
         formulaDescriptionTk: "k = Constante de resfriamento (material × tamanho)",
         idealTempsTitle: "Temperaturas Ideais",
     },
@@ -159,6 +164,8 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         formulaTitle: "Cómo funciona",
         formulaSubtitle: "La ciencia detrás de la temperatura perfecta",
         formulaDescriptionT: "T(t) = Temperatura en el tiempo t",
+        formulaDescriptionTs:
+            "T_s = Temperatura ambiente (nevera/congelador). Cuanto mas fria, mas rapido se enfria la bebida.",
         formulaDescriptionTk: "k = Constante de enfriamiento (material × tamaño)",
         idealTempsTitle: "Temperaturas Ideales",
     },

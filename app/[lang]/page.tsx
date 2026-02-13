@@ -35,6 +35,9 @@ export default function Home() {
     setCurrentParams(params);
   }, []);
 
+  const formatTimeLabel = (value: number) =>
+    Number.isFinite(value) ? value : "∞";
+
   return (
     <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black text-white px-3 py-6 lg:p-6 mb-16 font-[family-name:var(--font-geist-sans)]">
       <div className="max-w-6xl mx-auto space-y-12">
@@ -71,7 +74,7 @@ export default function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <ResultStatsCard
                     label={t(language, "estimatedTime")}
-                    value={coolingResult.timeToIdeal}
+                    value={formatTimeLabel(coolingResult.timeToIdeal)}
                     unit={t(language, "minutesShort")}
                     valueClassName="text-primary"
                   />
@@ -95,7 +98,7 @@ export default function Home() {
                     <CardDescription>
                       {t(language, "chartIdealBadge", {
                         temp: DRINK_TYPES[currentParams.drinkType].idealTemp,
-                        time: coolingResult.timeToIdeal,
+                        time: formatTimeLabel(coolingResult.timeToIdeal),
                       })}
                     </CardDescription>
                   </CardHeader>
