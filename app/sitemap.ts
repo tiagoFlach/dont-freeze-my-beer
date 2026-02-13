@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { SUPPORTED_LANGUAGES } from "@/lib/i18n";
 import { getSiteUrl } from "@/lib/site";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = getSiteUrl();
     const lastModified = new Date();
