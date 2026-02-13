@@ -106,8 +106,10 @@ export const generateCoolingData = (params: CoolingParams) => {
     const idealTemp = DRINK_TYPES[params.drinkType].idealTemp;
     const timeToIdeal = getTimeToTarget(idealTemp, params);
 
+    const isTimeFinite = Number.isFinite(timeToIdeal);
+
     // Generate data points up to 20% past the ideal time, or at least 60 mins
-    const maxTime = Math.max(60, timeToIdeal * 1.2);
+    const maxTime = isTimeFinite ? Math.max(60, timeToIdeal * 1.2) : 60;
     const data = [];
     const steps = 20;
     const interval = maxTime / steps;
@@ -121,7 +123,7 @@ export const generateCoolingData = (params: CoolingParams) => {
 
     return {
         data,
-        timeToIdeal: Math.round(timeToIdeal),
+        timeToIdeal: isTimeFinite ? Math.round(timeToIdeal) : Infinity,
         idealTemp
     };
 };
