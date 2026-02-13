@@ -39,7 +39,7 @@ export default function Home() {
     Number.isFinite(value) ? value : "∞";
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black text-white px-3 py-6 lg:p-6 mb-16 font-[family-name:var(--font-geist-sans)]">
+    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-slate-100 to-white text-foreground dark:from-blue-900 dark:via-slate-900 dark:to-black px-3 py-6 lg:p-6 mb-16 font-[family-name:var(--font-geist-sans)]">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Hero Section */}
         <section className="text-center space-y-4 pt-8 mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
