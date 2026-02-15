@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -26,7 +26,6 @@ import {
   Martini,
   Package,
   Recycle,
-  Snowflake,
   Thermometer,
   ThermometerSnowflake,
   Wine,
@@ -84,14 +83,11 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
     method: "freezer",
   });
 
-  const parsedInitialTemp = useMemo(() => {
-    const value = Number(formState.initialTemp);
-    return Number.isFinite(value) ? value : NaN;
-  }, [formState.initialTemp]);
-
-  const isValid = useMemo(() => {
-    return parsedInitialTemp >= 0 && parsedInitialTemp <= 40;
-  }, [parsedInitialTemp]);
+  const parsedInitialTemp = Number(formState.initialTemp);
+  const isValid =
+    Number.isFinite(parsedInitialTemp) &&
+    parsedInitialTemp >= 0 &&
+    parsedInitialTemp <= 40;
 
   const sliderValue = Number.isFinite(parsedInitialTemp)
     ? parsedInitialTemp
@@ -122,7 +118,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
         material: formState.material,
         size: formState.size,
         method: formState.method,
-      } as CoolingParams);
+      });
     }
   }, [
     formState.drinkType,
@@ -136,10 +132,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
 
   // Reset size when drink type changes
   useEffect(() => {
-    const availableSizes = Object.keys(
-      CONTAINER_SIZES[formState.drinkType as keyof typeof CONTAINER_SIZES] ??
-        {},
-    );
+    const availableSizes = Object.keys(CONTAINER_SIZES[formState.drinkType]);
     // If current size is not valid for new drink type, select the first available one
     if (!availableSizes.includes(formState.size)) {
       setFormState((prev) => ({ ...prev, size: availableSizes[0] }));
