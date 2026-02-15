@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { CoolingForm } from "@/components/CoolingForm";
 import { CoolingChart } from "@/components/CoolingChart";
 import { ResultStatsCard } from "@/components/ResultStatsCard";
@@ -50,6 +50,29 @@ export default function Home() {
   const freezingTimeLabel = isFreezingTimeFinite
     ? Math.round(freezingTime)
     : "—";
+  const [showFreezeAlert, setShowFreezeAlert] = useState(false);
+  const [freezeAlertLeaving, setFreezeAlertLeaving] = useState(false);
+  const freezeAlertExitMs = 500;
+
+  useEffect(() => {
+    if (isFreezingTimeFinite) {
+      setShowFreezeAlert(true);
+      setFreezeAlertLeaving(false);
+      return;
+    }
+
+    if (!showFreezeAlert) {
+      return;
+    }
+
+    setFreezeAlertLeaving(true);
+    const timer = window.setTimeout(() => {
+      setShowFreezeAlert(false);
+      setFreezeAlertLeaving(false);
+    }, freezeAlertExitMs);
+
+    return () => window.clearTimeout(timer);
+  }, [isFreezingTimeFinite, showFreezeAlert]);
 
   return (
     <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-slate-100 to-white text-foreground dark:from-blue-900 dark:via-slate-900 dark:to-black px-3 py-6 lg:p-6 mb-16 font-[family-name:var(--font-geist-sans)]">
@@ -99,29 +122,43 @@ export default function Home() {
                   />
                 </div>
 
-                {isFreezingTimeFinite && (
-                  <Card className="border-amber-500/50 bg-amber-500/10">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <AlertTriangle className="h-5 w-5 text-amber-400" />
-                        {t(language, "freezeAlertTitle")}
-                      </CardTitle>
-                      <CardDescription className="text-amber-200/80">
-                        {t(language, "freezeAlertDescription", {
-                          time: freezingTimeLabel,
-                        })}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex items-center justify-between">
-                      <div className="text-4xl font-black text-amber-400">
-                        {freezingTimeLabel}
-                        <span className="text-base ml-1">
-                          {t(language, "minutesShort")}
-                        </span>
-                      </div>
-                      <Snowflake className="h-8 w-8 text-amber-300/80" />
-                    </CardContent>
-                  </Card>
+                {showFreezeAlert && (
+                  <div
+                    className={`overflow-hidden transition-[max-height,opacity,transform] duration-500 ease-out ${
+                      freezeAlertLeaving
+                        ? "max-h-0 opacity-0 -translate-y-1"
+                        : "max-h-65 opacity-100 translate-y-0"
+                    }`}
+                  >
+                    <Card
+                      className={`border-amber-500/50 bg-amber-500/10 duration-500 ${
+                        freezeAlertLeaving
+                          ? "animate-out fade-out-0 slide-out-to-top-2"
+                          : "animate-in fade-in slide-in-from-top-2"
+                      }`}
+                    >
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <AlertTriangle className="h-5 w-5 text-amber-400" />
+                          {t(language, "freezeAlertTitle")}
+                        </CardTitle>
+                        <CardDescription className="text-amber-200/80">
+                          {t(language, "freezeAlertDescription", {
+                            time: freezingTimeLabel,
+                          })}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex items-center justify-between">
+                        <div className="text-4xl font-black text-amber-400">
+                          {freezingTimeLabel}
+                          <span className="text-base ml-1">
+                            {t(language, "minutesShort")}
+                          </span>
+                        </div>
+                        <Snowflake className="h-8 w-8 text-amber-300/80" />
+                      </CardContent>
+                    </Card>
+                  </div>
                 )}
 
                 <Card>
