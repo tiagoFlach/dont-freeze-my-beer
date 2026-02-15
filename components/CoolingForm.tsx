@@ -28,6 +28,7 @@ import {
   Recycle,
   Snowflake,
   Thermometer,
+  ThermometerSnowflake,
   Wine,
 } from "lucide-react";
 
@@ -39,8 +40,38 @@ type FormState = {
   method: "fridge" | "freezer";
 };
 
+type OptionCardProps = {
+  selected: boolean;
+  label: string;
+  onClick: () => void;
+  Icon: React.ComponentType<{ className?: string }>;
+};
+
 interface CoolingFormProps {
   onCalculate: (params: CoolingParams) => void;
+}
+
+function OptionCard({ selected, label, onClick, Icon }: OptionCardProps) {
+  const optionCardClass = (isSelected: boolean) =>
+    cn(
+      "flex flex-col items-center gap-2 rounded-lg border border-border bg-muted/30 p-3 text-center text-sm transition",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+      "hover:border-primary/60",
+      isSelected && "border-primary/60 bg-primary/10 text-foreground",
+    );
+
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={selected}
+      className={optionCardClass(selected)}
+      onClick={onClick}
+    >
+      <Icon className="h-5 w-5 text-primary" />
+      <span className="text-xs text-muted-foreground">{label}</span>
+    </button>
+  );
 }
 
 export function CoolingForm({ onCalculate }: CoolingFormProps) {
@@ -66,14 +97,6 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
     ? parsedInitialTemp
     : 0;
 
-  const optionCardClass = (selected: boolean) =>
-    cn(
-      "flex flex-col items-center gap-1 rounded-lg border border-border bg-muted/30 p-3 text-center text-sm transition",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
-      "hover:border-primary/60",
-      selected && "border-primary/60 bg-primary/10 text-foreground",
-    );
-
   const drinkIcons = {
     beer: Beer,
     wine: Wine,
@@ -88,7 +111,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
 
   const methodIcons = {
     fridge: Thermometer,
-    freezer: Snowflake,
+    freezer: ThermometerSnowflake,
   } as const;
 
   useEffect(() => {
@@ -143,28 +166,22 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                   const Icon = drinkIcons[key as keyof typeof drinkIcons];
 
                   return (
-                    <button
+                    <OptionCard
                       key={key}
-                      type="button"
-                      role="radio"
-                      aria-checked={selected}
-                      className={optionCardClass(selected)}
+                      selected={selected}
+                      Icon={Icon}
+                      label={
+                        optionLabels.drinkType[
+                          key as keyof typeof optionLabels.drinkType
+                        ][language]
+                      }
                       onClick={() =>
                         setFormState((prev) => ({
                           ...prev,
                           drinkType: key as FormState["drinkType"],
                         }))
                       }
-                    >
-                      <Icon className="h-5 w-5 text-primary" />
-                      <span className="text-xs text-muted-foreground">
-                        {
-                          optionLabels.drinkType[
-                            key as keyof typeof optionLabels.drinkType
-                          ][language]
-                        }
-                      </span>
-                    </button>
+                    />
                   );
                 })}
               </div>
@@ -239,28 +256,22 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                   const Icon = materialIcons[key as keyof typeof materialIcons];
 
                   return (
-                    <button
+                    <OptionCard
                       key={key}
-                      type="button"
-                      role="radio"
-                      aria-checked={selected}
-                      className={optionCardClass(selected)}
+                      selected={selected}
+                      Icon={Icon}
+                      label={
+                        optionLabels.material[
+                          key as keyof typeof optionLabels.material
+                        ][language]
+                      }
                       onClick={() =>
                         setFormState((prev) => ({
                           ...prev,
                           material: key as FormState["material"],
                         }))
                       }
-                    >
-                      <Icon className="h-5 w-5 text-primary" />
-                      <span className="text-xs text-muted-foreground">
-                        {
-                          optionLabels.material[
-                            key as keyof typeof optionLabels.material
-                          ][language]
-                        }
-                      </span>
-                    </button>
+                    />
                   );
                 })}
               </div>
@@ -278,28 +289,22 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                   const Icon = methodIcons[key as keyof typeof methodIcons];
 
                   return (
-                    <button
+                    <OptionCard
                       key={key}
-                      type="button"
-                      role="radio"
-                      aria-checked={selected}
-                      className={optionCardClass(selected)}
+                      selected={selected}
+                      Icon={Icon}
+                      label={
+                        optionLabels.method[
+                          key as keyof typeof optionLabels.method
+                        ][language]
+                      }
                       onClick={() =>
                         setFormState((prev) => ({
                           ...prev,
                           method: key as FormState["method"],
                         }))
                       }
-                    >
-                      <Icon className="h-5 w-5 text-primary" />
-                      <span className="text-xs text-muted-foreground">
-                        {
-                          optionLabels.method[
-                            key as keyof typeof optionLabels.method
-                          ][language]
-                        }
-                      </span>
-                    </button>
+                    />
                   );
                 })}
               </div>
