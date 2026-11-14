@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
     calculateK,
+    CONTAINER_MATERIALS,
     COOLING_METHODS,
+    COOLING_RATE_MODEL,
+    DRINK_TYPES,
     FRIDGE_MIN_MARGIN,
     generateCoolingData,
     getTemperatureAtTime,
@@ -41,7 +44,7 @@ test("the fridge chart covers the estimated time to its practical minimum", () =
     const result = generateCoolingData(params);
 
     assert.equal(result.timeToIdeal, Infinity);
-    assert.equal(Math.round(practicalTime), 335);
+    assert.equal(Math.round(practicalTime), 167);
     assert.ok(result.data[result.data.length - 1].time > practicalTime);
     assert.ok(result.data[result.data.length - 1].temp < practicalMin);
 });
@@ -58,13 +61,14 @@ test("the measured can and bottle retain their relative cooling times", () => {
     assert.ok(Math.abs(getTemperatureAtTime(bottleTime, bottle) - 5) < 1e-10);
 });
 
-test("the freezer reaches the requested target in 60 minutes for the reference can", () => {
+test("the freezer reaches the requested target in 30 minutes for the reference can", () => {
     const time = getTimeToTarget(4, defaultParams);
     const freezingTime = getTimeToTarget(0, defaultParams);
     const result = generateCoolingData(defaultParams);
 
     assert.ok(Number.isFinite(time));
-    assert.ok(Math.abs(time - 60) < 1e-10);
+    assert.ok(Math.abs(time - 30) < 1e-10);
+    assert.equal(Math.round(freezingTime), 39);
     assert.ok(freezingTime > time);
     assert.ok(Math.abs(getTemperatureAtTime(time, defaultParams) - 4) < 1e-10);
     assert.ok(Math.abs(getTemperatureAtTime(freezingTime, defaultParams)) < 1e-10);
@@ -102,11 +106,26 @@ test("all methods use the same rate and differ by their ambient temperatures", (
     }
 });
 
+test("the factors displayed in the formula reproduce the cooling rate", () => {
+    const scenarios: CoolingParams[] = [
+        defaultParams,
+        { ...defaultParams, drinkType: "wine", material: "glass", size: "750" },
+    ];
+
+    for (const params of scenarios) {
+        const displayedRate = COOLING_RATE_MODEL.referenceK * COOLING_RATE_MODEL.calibrationFactor *
+            (DRINK_TYPES[params.drinkType].kBase / DRINK_TYPES.beer.kBase) *
+            (CONTAINER_MATERIALS[params.material].mult / CONTAINER_MATERIALS.aluminum.mult) *
+            Math.pow(COOLING_RATE_MODEL.referenceVolume / Number(params.size), COOLING_RATE_MODEL.volumeExponent);
+        assert.ok(Math.abs(displayedRate - calculateK(params)) < 1e-12);
+    }
+});
+
 test("the freezer compartment uses the fixed -6°C ambient temperature", () => {
     const compartment = { ...defaultParams, method: "freezerCompartment" } as const;
     const time = getTimeToTarget(4, compartment);
 
-    assert.equal(Math.round(time), 101);
+    assert.equal(Math.round(time), 51);
     assert.ok(time > getTimeToTarget(4, defaultParams));
     assert.ok(Math.abs(getTemperatureAtTime(time, compartment) - 4) < 1e-10);
     assert.equal(generateCoolingData(compartment).timeToIdeal, Math.round(time));

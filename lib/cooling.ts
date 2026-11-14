@@ -51,11 +51,12 @@ const FREEZER_SIZE_EXPONENT = Math.log(
     (CONTAINER_MATERIALS.plastic.mult / CONTAINER_MATERIALS.aluminum.mult),
 ) / Math.log(FREEZER_REFERENCE.bottleSize / FREEZER_REFERENCE.canSize);
 
+// Practical reference without thermometer validation, separate from the SINTEF measurements.
 const FREEZER_CALIBRATION = {
     size: 350,
     initialTemp: 25,
     targetTemp: 4,
-    minutes: 60,
+    minutes: 30,
 };
 
 const CALIBRATION_FACTOR = (
@@ -67,6 +68,13 @@ const CALIBRATION_FACTOR = (
     FREEZER_REFERENCE_K *
     Math.pow(FREEZER_REFERENCE.canSize / FREEZER_CALIBRATION.size, FREEZER_SIZE_EXPONENT)
 );
+
+export const COOLING_RATE_MODEL = {
+    referenceK: FREEZER_REFERENCE_K,
+    calibrationFactor: CALIBRATION_FACTOR,
+    referenceVolume: FREEZER_REFERENCE.canSize,
+    volumeExponent: FREEZER_SIZE_EXPONENT,
+} as const;
 
 // Available container sizes in milliliters
 export const CONTAINER_SIZES = {
@@ -114,10 +122,10 @@ export const calculateK = (params: CoolingParams) => {
         throw new RangeError("Container size must be a positive number");
     }
 
-    return FREEZER_REFERENCE_K * CALIBRATION_FACTOR *
+    return COOLING_RATE_MODEL.referenceK * COOLING_RATE_MODEL.calibrationFactor *
         (baseK / DRINK_TYPES.beer.kBase) *
         (material.mult / CONTAINER_MATERIALS.aluminum.mult) *
-        Math.pow(FREEZER_REFERENCE.canSize / volume, FREEZER_SIZE_EXPONENT);
+        Math.pow(COOLING_RATE_MODEL.referenceVolume / volume, COOLING_RATE_MODEL.volumeExponent);
 };
 
 export const getTemperatureAtTime = (t: number, params: CoolingParams) => {

@@ -184,10 +184,15 @@ export default function Home() {
                       </span>
                     </CardAction>
                     <CardDescription>
-                      {t(language, "chartIdealBadge", {
-                        temp: DRINK_TYPES[currentParams.drinkType].idealTemp,
-                        time: formatTimeLabel(coolingResult.timeToIdeal),
-                      })}
+                      {currentParams.initialTemp <=
+                      DRINK_TYPES[currentParams.drinkType].idealTemp
+                        ? t(language, "chartAlreadyCool")
+                        : Number.isFinite(coolingResult.timeToIdeal)
+                          ? t(language, "chartIdealBadge", {
+                              temp: DRINK_TYPES[currentParams.drinkType].idealTemp,
+                              time: coolingResult.timeToIdeal,
+                            })
+                          : t(language, "chartUnreachable")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -215,7 +220,7 @@ export default function Home() {
 
         {/* Formula Section - Full Width */}
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
-          <FormulaCard language={language} />
+          <FormulaCard language={language} params={currentParams} />
         </div>
       </div>
     </main>

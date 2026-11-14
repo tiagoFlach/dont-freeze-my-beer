@@ -41,6 +41,14 @@ type TranslationKey =
     | "formulaDescriptionT"
     | "formulaDescriptionTs"
     | "formulaDescriptionTk"
+    | "rateCalculationTitle"
+    | "rateReference"
+    | "rateCalibration"
+    | "rateDrink"
+    | "rateMaterial"
+    | "rateVolume"
+    | "rateExponent"
+    | "rateRounded"
     | "formulaAssumptions"
     | "formulaEstimate"
     | "formulaSource"
@@ -98,10 +106,18 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         formulaDescriptionTs:
             "T_s = Surrounding temperature (fridge, freezer, or freezer compartment), assumed constant.",
         formulaDescriptionTk: "k = Estimated cooling constant (drink, material, and size)",
+        rateCalculationTitle: "Cooling constant for the selected settings",
+        rateReference: "Reference rate from the SINTEF experiment",
+        rateCalibration: "Practical calibration factor",
+        rateDrink: "Drink coefficients (selected / beer)",
+        rateMaterial: "Material factors (selected / aluminum)",
+        rateVolume: "Volumes (reference / selected)",
+        rateExponent: "Volume exponent",
+        rateRounded: "Values are rounded for display.",
         formulaAssumptions:
             "The model assumes a constant surrounding temperature and a uniform drink temperature.",
         formulaEstimate:
-            "All methods use the same estimated rate with different surrounding temperatures. The rate starts from a test with water and is adjusted to a 60-minute reference for a 350 ml aluminum can cooling from 25°C to 4°C in a freezer. Other estimates are unvalidated extrapolations; times can vary with the drink and equipment.",
+            "All methods use the same estimated rate with different surrounding temperatures. The rate starts from a test with water and is adjusted to a practical reference without thermometer validation: 30 min for a 350 ml aluminum can cooling from 25°C to 4°C in a freezer. Other estimates are unvalidated extrapolations; times can vary with the drink and equipment.",
         formulaSource: "Formula source: Newton's law of cooling (OpenStax)",
         freezerSource: "Freezer experiment: SINTEF (in English)",
         idealTempsTitle: "Ideal Temperatures",
@@ -158,10 +174,18 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
             "T_s = Temperatura ambiente (geladeira, freezer ou congelador), considerada constante.",
         formulaDescriptionTk:
             "k = Constante de resfriamento estimada (bebida, material e tamanho)",
+        rateCalculationTitle: "Constante de resfriamento para as opções selecionadas",
+        rateReference: "Taxa de referência do experimento da SINTEF",
+        rateCalibration: "Fator de calibração prática",
+        rateDrink: "Coeficientes de bebida (selecionada / cerveja)",
+        rateMaterial: "Fatores de material (selecionado / alumínio)",
+        rateVolume: "Volumes (referência / selecionado)",
+        rateExponent: "Expoente do volume",
+        rateRounded: "Valores arredondados para exibição.",
         formulaAssumptions:
             "O modelo supõe temperatura ambiente constante e temperatura uniforme na bebida.",
         formulaEstimate:
-            "Todos os métodos usam a mesma taxa estimada, com temperaturas ambientes diferentes. A taxa parte de um teste com água e foi ajustada à referência de 60 min para uma lata de alumínio de 350 ml, de 25°C a 4°C no freezer. As demais estimativas são extrapolações não validadas; os tempos podem variar conforme a bebida e o equipamento.",
+            "Todos os métodos usam a mesma taxa estimada, com temperaturas ambientes diferentes. A taxa parte de um teste com água e foi ajustada a uma referência prática, sem medição com termômetro: 30 min para uma lata de alumínio de 350 ml, de 25°C a 4°C no freezer. As demais estimativas são extrapolações não validadas; os tempos podem variar conforme a bebida e o equipamento.",
         formulaSource: "Fonte da fórmula: Lei do Resfriamento de Newton (OpenStax, em inglês)",
         freezerSource: "Experimento no freezer: SINTEF (em inglês)",
         idealTempsTitle: "Temperaturas Ideais",
@@ -218,10 +242,18 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
             "T_s = Temperatura ambiente (nevera, congelador o compartimento congelador), considerada constante.",
         formulaDescriptionTk:
             "k = Constante de enfriamiento estimada (bebida, material y tamaño)",
+        rateCalculationTitle: "Constante de enfriamiento para las opciones seleccionadas",
+        rateReference: "Tasa de referencia del experimento de SINTEF",
+        rateCalibration: "Factor de calibración práctica",
+        rateDrink: "Coeficientes de bebida (seleccionada / cerveza)",
+        rateMaterial: "Factores de material (seleccionado / aluminio)",
+        rateVolume: "Volúmenes (referencia / seleccionado)",
+        rateExponent: "Exponente del volumen",
+        rateRounded: "Valores redondeados para mostrar.",
         formulaAssumptions:
             "El modelo supone una temperatura ambiente constante y una temperatura uniforme en la bebida.",
         formulaEstimate:
-            "Todos los métodos usan la misma tasa estimada con distintas temperaturas ambiente. La tasa parte de una prueba con agua y se ajusta a una referencia de 60 min para una lata de aluminio de 350 ml, de 25°C a 4°C en el congelador. Las demás estimaciones son extrapolaciones no validadas; los tiempos pueden variar según la bebida y el equipo.",
+            "Todos los métodos usan la misma tasa estimada con distintas temperaturas ambiente. La tasa parte de una prueba con agua y se ajusta a una referencia práctica sin medición con termómetro: 30 min para una lata de aluminio de 350 ml, de 25°C a 4°C en el congelador. Las demás estimaciones son extrapolaciones no validadas; los tiempos pueden variar según la bebida y el equipo.",
         formulaSource: "Fuente de la fórmula: ley de enfriamiento de Newton (OpenStax, en inglés)",
         freezerSource: "Experimento en congelador: SINTEF (en inglés)",
         idealTempsTitle: "Temperaturas Ideales",

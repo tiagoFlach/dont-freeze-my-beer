@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { Field, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import {
   DRINK_TYPES,
   CONTAINER_MATERIALS,
@@ -26,6 +26,7 @@ import {
   Martini,
   Package,
   Recycle,
+  Snowflake,
   Thermometer,
   ThermometerSnowflake,
   Wine,
@@ -36,12 +37,13 @@ type FormState = {
   initialTemp: string;
   material: "glass" | "aluminum" | "plastic";
   size: string;
-  method: "fridge" | "freezer";
+  method: keyof typeof COOLING_METHODS;
 };
 
 type OptionCardProps = {
   selected: boolean;
   label: string;
+  detail?: string;
   onClick: () => void;
   Icon: React.ComponentType<{ className?: string }>;
 };
@@ -50,7 +52,7 @@ interface CoolingFormProps {
   onCalculate: (params: CoolingParams) => void;
 }
 
-function OptionCard({ selected, label, onClick, Icon }: OptionCardProps) {
+function OptionCard({ selected, label, detail, onClick, Icon }: OptionCardProps) {
   const optionCardClass = (isSelected: boolean) =>
     cn(
       "flex flex-col items-center gap-2 rounded-lg border border-border bg-muted/30 p-3 text-center text-sm transition",
@@ -68,7 +70,10 @@ function OptionCard({ selected, label, onClick, Icon }: OptionCardProps) {
       onClick={onClick}
     >
       <Icon className="h-5 w-5 text-primary" />
-      <span className="text-xs text-muted-foreground">{label}</span>
+      <span className="text-xs text-muted-foreground">
+        {label}
+        {detail && <span className="block font-medium text-foreground">{detail}</span>}
+      </span>
     </button>
   );
 }
@@ -108,6 +113,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
   const methodIcons = {
     fridge: Thermometer,
     freezer: ThermometerSnowflake,
+    freezerCompartment: Snowflake,
   } as const;
 
   useEffect(() => {
@@ -273,11 +279,12 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
             <div className="space-y-2">
               <FieldLabel>{t(language, "formMethodLabel")}</FieldLabel>
               <div
-                className="grid grid-cols-2 gap-2"
+                className="grid grid-cols-3 gap-2"
                 role="radiogroup"
                 aria-label={t(language, "formMethodLabel")}
+                aria-describedby="method-temperature-help"
               >
-                {Object.entries(COOLING_METHODS).map(([key]) => {
+                {Object.entries(COOLING_METHODS).map(([key, { ambientTemp }]) => {
                   const selected = formState.method === key;
                   const Icon = methodIcons[key as keyof typeof methodIcons];
 
@@ -286,6 +293,7 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                       key={key}
                       selected={selected}
                       Icon={Icon}
+                      detail={`${ambientTemp}°C`}
                       label={
                         optionLabels.method[
                           key as keyof typeof optionLabels.method
@@ -301,6 +309,13 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                   );
                 })}
               </div>
+              <FieldDescription
+                id="method-temperature-help"
+                className="text-xs text-muted-foreground"
+              >
+                <strong>{t(language, "formMethodTempNote")}</strong>{" "}
+                {t(language, "formMethodTempHelp")}
+              </FieldDescription>
             </div>
           </div>
         </form>
