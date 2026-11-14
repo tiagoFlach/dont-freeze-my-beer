@@ -12,6 +12,7 @@ interface ResultStatsCardProps {
   value: number | string;
   unit: string;
   valueClassName?: string;
+  note?: string;
 }
 
 export function ResultStatsCard({
@@ -19,6 +20,7 @@ export function ResultStatsCard({
   value,
   unit,
   valueClassName,
+  note,
 }: ResultStatsCardProps) {
   return (
     <Card>
@@ -32,6 +34,11 @@ export function ResultStatsCard({
           {value}
           <span className="text-xl ml-1">{unit}</span>
         </CardTitle>
+        {note && (
+          <CardDescription className="text-slate-400 text-sm">
+            {note}
+          </CardDescription>
+        )}
       </CardHeader>
     </Card>
   );

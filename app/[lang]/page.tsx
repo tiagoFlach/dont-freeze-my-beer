@@ -8,6 +8,8 @@ import { FormulaCard } from "@/components/FormulaCard";
 import { SectionTitle } from "@/components/SectionTitle";
 import {
   CoolingParams,
+  COOLING_METHODS,
+  FRIDGE_MIN_MARGIN,
   generateCoolingData,
   DRINK_TYPES,
   getTimeToTarget,
@@ -50,6 +52,16 @@ export default function Home() {
   const freezingTimeLabel = isFreezingTimeFinite
     ? Math.round(freezingTime)
     : "—";
+
+  const fridgeMinTemp =
+    COOLING_METHODS.fridge.ambientTemp + FRIDGE_MIN_MARGIN;
+  const fridgeMinTime =
+    currentParams?.method === "fridge"
+      ? getTimeToTarget(fridgeMinTemp, currentParams)
+      : Infinity;
+  const fridgeMinNote = Number.isFinite(fridgeMinTime)
+    ? `${t(language, "fridgeMinTimeLabel", { temp: fridgeMinTemp })}: ${Math.round(fridgeMinTime)} ${t(language, "minutesShort")}`
+    : undefined;
   const [showFreezeAlert, setShowFreezeAlert] = useState(false);
   const [freezeAlertLeaving, setFreezeAlertLeaving] = useState(false);
   const freezeAlertExitMs = 500;
@@ -113,6 +125,7 @@ export default function Home() {
                     value={formatTimeLabel(coolingResult.timeToIdeal)}
                     unit={t(language, "minutesShort")}
                     valueClassName="text-primary"
+                    note={fridgeMinNote}
                   />
                   <ResultStatsCard
                     label={t(language, "targetTemp")}
