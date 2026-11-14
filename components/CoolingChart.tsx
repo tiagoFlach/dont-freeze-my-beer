@@ -43,7 +43,8 @@ export function CoolingChart({
           <CartesianGrid
             strokeDasharray="3 3"
             vertical={false}
-            stroke="hsl(var(--muted-foreground) / 0.2)"
+            stroke="currentColor"
+            className="text-muted-foreground/20"
           />
           <XAxis
             dataKey="time"
@@ -52,7 +53,8 @@ export function CoolingChart({
               position: "insideBottomRight",
               offset: -8,
             }}
-            stroke="hsl(var(--muted-foreground))"
+            stroke="currentColor"
+            className="text-muted-foreground"
             fontSize={12}
           />
           <YAxis
@@ -62,17 +64,18 @@ export function CoolingChart({
               position: "insideLeft",
               offset: 8,
             }}
-            stroke="hsl(var(--muted-foreground))"
+            stroke="currentColor"
+            className="text-muted-foreground"
             fontSize={12}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "hsl(var(--card))",
-              borderColor: "hsl(var(--border))",
+              backgroundColor: "var(--card)",
+              borderColor: "var(--border)",
               borderRadius: "12px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
-            itemStyle={{ color: "var(--primary)" }}
+            itemStyle={{ color: "#3b82f6" }}
             labelFormatter={(label) =>
               `${label} ${t(language, "chartTooltipMin")}`
             }
@@ -81,19 +84,21 @@ export function CoolingChart({
           {/* Highlight target area */}
           <ReferenceLine
             y={idealTemp}
-            stroke="hsl(var(--primary))"
+            stroke="currentColor"
+            className="text-primary"
             strokeDasharray="3 3"
             label={{
               value: t(language, "chartIdealLabel"),
               position: "right",
-              fill: "var(--primary)",
+              fill: "currentColor",
               fontSize: 12,
             }}
           />
           {hasFiniteTime && (
             <ReferenceLine
               x={timeToIdeal}
-              stroke="hsl(var(--primary))"
+              stroke="currentColor"
+              className="text-primary"
               strokeDasharray="3 3"
             />
           )}
@@ -101,15 +106,16 @@ export function CoolingChart({
           <Line
             type="monotone"
             dataKey="temp"
-            stroke="hsl(var(--primary))"
+            stroke="currentColor"
+            className="text-blue-500"
             strokeWidth={3}
-            dot={{ fill: "hsl(var(--primary))", r: 4 }}
+            dot={{ fill: "currentColor", r: 4 }}
             activeDot={{
               r: 6,
-              stroke: "hsl(var(--background))",
+              className: "stroke-background",
               strokeWidth: 2,
             }}
-            animationDuration={1500}
+            isAnimationActive={false}
           />
         </LineChart>
       </ResponsiveContainer>
