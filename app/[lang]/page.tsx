@@ -94,7 +94,7 @@ export default function Home() {
           <div className="inline-flex items-center justify-center mb-4">
             <Snowflake className="w-16 h-16 snowflake-color-shift" />
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-white">
+          <h1 className="text-5xl md:text-7xl leading-[1.15] font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-white">
             {t(language, "heroTitle")}
           </h1>
           <p className="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto">
