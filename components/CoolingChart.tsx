@@ -12,9 +12,10 @@ import {
 } from "recharts";
 import { useLanguage } from "@/components/language-provider";
 import { t } from "@/lib/i18n";
+import type { generateCoolingData } from "@/lib/cooling";
 
 interface CoolingChartProps {
-  data: any[];
+  data: ReturnType<typeof generateCoolingData>["data"];
   timeToIdeal: number;
   idealTemp: number;
 }
@@ -48,6 +49,8 @@ export function CoolingChart({
           />
           <XAxis
             dataKey="time"
+            type="number"
+            domain={["dataMin", "dataMax"]}
             label={{
               value: t(language, "chartXAxis"),
               position: "insideBottomRight",

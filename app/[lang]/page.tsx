@@ -91,13 +91,13 @@ export default function Home() {
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Hero Section */}
         <section className="text-center space-y-4 pt-8 mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
-          <div className="inline-flex items-center justify-center mb-4">
-            <Snowflake className="w-16 h-16 snowflake-color-shift" />
+          <div className="inline-flex items-center justify-center mb-4 animate-spin [animation-duration:48s] will-change-transform">
+            <Snowflake className="w-16 h-16 animate-[snowflake-color_25s_ease-in-out_infinite]" />
           </div>
-          <h1 className="text-5xl md:text-7xl leading-[1.15] font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-white">
+          <h1 className="text-5xl md:text-7xl leading-[1.15] font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-900 to-cyan-800 dark:from-blue-400 dark:to-white">
             {t(language, "heroTitle")}
           </h1>
-          <p className="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto">
+          <p className="text-slate-700 dark:text-slate-400 text-lg md:text-xl max-w-3xl mx-auto">
             {t(language, "heroSubtitle")}
           </p>
         </section>
@@ -144,31 +144,31 @@ export default function Home() {
                     }`}
                   >
                     <Card
-                      className={`border-amber-500/50 bg-amber-500/10 duration-500 ${
+                      className={`border-amber-300 bg-amber-50 dark:border-amber-500/50 dark:bg-amber-500/10 duration-500 ${
                         freezeAlertLeaving
                           ? "animate-out fade-out-0 slide-out-to-top-2"
                           : "animate-in fade-in slide-in-from-top-2"
                       }`}
                     >
                       <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <AlertTriangle className="h-5 w-5 text-amber-400" />
+                        <CardTitle className="flex items-center gap-2 text-amber-950 dark:text-card-foreground">
+                          <AlertTriangle className="h-5 w-5 text-amber-700 dark:text-amber-400" />
                           {t(language, "freezeAlertTitle")}
                         </CardTitle>
-                        <CardDescription className="text-amber-200/80">
+                        <CardDescription className="text-amber-900 dark:text-amber-200/80">
                           {t(language, "freezeAlertDescription", {
                             time: freezingTimeLabel,
                           })}
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="flex items-center justify-between">
-                        <div className="text-4xl font-black text-amber-400">
+                        <div className="text-4xl font-black text-amber-800 dark:text-amber-400">
                           {freezingTimeLabel}
                           <span className="text-base ml-1">
                             {t(language, "minutesShort")}
                           </span>
                         </div>
-                        <Snowflake className="h-8 w-8 text-amber-300/80" />
+                        <Snowflake className="h-8 w-8 text-amber-700 dark:text-amber-300/80" />
                       </CardContent>
                     </Card>
                   </div>

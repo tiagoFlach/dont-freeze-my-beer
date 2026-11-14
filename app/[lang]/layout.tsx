@@ -1,9 +1,22 @@
 import Navbar from "../components/navbar";
 import { LanguageProvider } from "@/components/language-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { SUPPORTED_LANGUAGES, t, type Language } from "@/lib/i18n";
 import { getSiteUrl } from "@/lib/site";
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import { redirect } from "next/navigation";
+import "../globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 const LOCALE_MAP: Record<Language, string> = {
   pt: "pt_BR",
@@ -35,8 +48,14 @@ export async function generateMetadata({
   const canonical = new URL(`/${language}`, baseUrl).toString();
 
   return {
-    title: t(language, "metaTitle"),
+    metadataBase: baseUrl,
+    title: `${t(language, "metaTitle")} | Don't Freeze My Beer`,
     description: t(language, "metaDescription"),
+    applicationName: "Don't Freeze My Beer",
+    creator: "Don't Freeze My Beer",
+    publisher: "Don't Freeze My Beer",
+    category: "Food & Drink",
+    robots: { index: true, follow: true },
     keywords: t(language, "metaKeywords").split(", "),
     alternates: {
       canonical,
@@ -76,11 +95,20 @@ export default async function LanguageLayout({
   }
 
   return (
-    <LanguageProvider defaultLanguage={language}>
-      <Navbar />
-      <main>
-        <div className="mx-auto max-w-5xl">{children}</div>
-      </main>
-    </LanguageProvider>
+    <html lang={language} suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <LanguageProvider defaultLanguage={language}>
+            <Navbar />
+            <div className="mx-auto max-w-5xl">{children}</div>
+          </LanguageProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

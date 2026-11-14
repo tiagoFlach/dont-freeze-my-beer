@@ -42,7 +42,7 @@ export default function Navbar() {
               variant="outline"
               size="icon"
               className="md:hidden"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-label={t(language, menuOpen ? "closeMenu" : "openMenu")}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((open) => !open)}
             >
@@ -50,10 +50,10 @@ export default function Navbar() {
             </Button>
           </div>
           <nav
-            className={`w-full overflow-hidden transition-[max-height,opacity] duration-200 ease-out md:w-auto md:overflow-visible md:transition-none ${
+            className={`w-full md:block md:w-auto ${
               menuOpen
-                ? "max-h-64 opacity-100 mt-2"
-                : "max-h-0 opacity-0 pointer-events-none md:max-h-none md:opacity-100 md:pointer-events-auto"
+                ? "mt-2"
+                : "hidden"
             }`}
           >
             <ul className="flex w-full items-center justify-end gap-3 md:w-auto">
@@ -84,19 +84,16 @@ export default function Navbar() {
                 <ThemeToggle />
               </li>
               <li>
-                <a
-                  href="https://github.com/tiagoFlach/dont-freeze-my-beer"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button
-                    variant="outline"
-                    size="icon"
+                <Button variant="outline" size="icon" asChild>
+                  <a
+                    href="https://github.com/tiagoFlach/dont-freeze-my-beer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={t(language, "githubLabel")}
                   >
                     <Github />
-                  </Button>
-                </a>
+                  </a>
+                </Button>
               </li>
             </ul>
           </nav>

@@ -33,6 +33,8 @@ type TranslationKey =
     | "formMethodTempHelp"
     | "languageSelectLabel"
     | "languageSelectPlaceholder"
+    | "openMenu"
+    | "closeMenu"
     | "themeToggleLabel"
     | "githubLabel"
     | "minutesShort"
@@ -97,6 +99,8 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         formMethodTempHelp: "Reference temperatures may vary depending on the appliance.",
         languageSelectLabel: "Select language",
         languageSelectPlaceholder: "Language",
+        openMenu: "Open menu",
+        closeMenu: "Close menu",
         themeToggleLabel: "Toggle theme",
         githubLabel: "Open GitHub",
         minutesShort: "min",
@@ -164,6 +168,8 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         formMethodTempHelp: "Temperaturas de referência; podem variar conforme o aparelho.",
         languageSelectLabel: "Selecionar idioma",
         languageSelectPlaceholder: "Idioma",
+        openMenu: "Abrir menu",
+        closeMenu: "Fechar menu",
         themeToggleLabel: "Alternar tema",
         githubLabel: "Abrir GitHub",
         minutesShort: "min",
@@ -232,6 +238,8 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         formMethodTempHelp: "Las temperaturas de referencia pueden variar según el equipo.",
         languageSelectLabel: "Seleccionar idioma",
         languageSelectPlaceholder: "Idioma",
+        openMenu: "Abrir menú",
+        closeMenu: "Cerrar menú",
         themeToggleLabel: "Cambiar tema",
         githubLabel: "Abrir GitHub",
         minutesShort: "min",

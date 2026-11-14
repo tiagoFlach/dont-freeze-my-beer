@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   DRINK_TYPES,
   CONTAINER_MATERIALS,
@@ -19,7 +20,6 @@ import {
 } from "@/lib/cooling";
 import { optionLabels, t } from "@/lib/i18n";
 import { useLanguage } from "@/components/language-provider";
-import { cn } from "@/lib/utils";
 import {
   Beer,
   BottleWine,
@@ -41,10 +41,9 @@ type FormState = {
 };
 
 type OptionCardProps = {
-  selected: boolean;
+  value: string;
   label: string;
   detail?: string;
-  onClick: () => void;
   Icon: React.ComponentType<{ className?: string }>;
 };
 
@@ -52,29 +51,16 @@ interface CoolingFormProps {
   onCalculate: (params: CoolingParams) => void;
 }
 
-function OptionCard({ selected, label, detail, onClick, Icon }: OptionCardProps) {
-  const optionCardClass = (isSelected: boolean) =>
-    cn(
-      "flex flex-col items-center gap-2 rounded-lg border border-border bg-muted/30 p-3 text-center text-sm transition",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
-      "hover:border-primary/60",
-      isSelected && "border-primary/60 bg-primary/10 text-foreground",
-    );
-
+function OptionCard({ value, label, detail, Icon }: OptionCardProps) {
   return (
-    <button
-      type="button"
-      role="radio"
-      aria-checked={selected}
-      className={optionCardClass(selected)}
-      onClick={onClick}
-    >
-      <Icon className="h-5 w-5 text-primary" />
+    <label className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-border bg-muted/30 p-3 text-center text-sm transition hover:border-primary/60 has-checked:border-primary/60 has-checked:bg-primary/10 has-focus-visible:ring-2 has-focus-visible:ring-primary/40">
+      <RadioGroupItem value={value} className="sr-only" />
+      <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
       <span className="text-xs text-muted-foreground">
         {label}
         {detail && <span className="block font-medium text-foreground">{detail}</span>}
       </span>
-    </button>
+    </label>
   );
 }
 
@@ -155,35 +141,34 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
           <div className="grid grid-cols-1 gap-5 md:gap-6">
             <div className="space-y-2">
               <FieldLabel>{t(language, "formDrinkTypeLabel")}</FieldLabel>
-              <div
+              <RadioGroup
                 className="grid grid-cols-3 gap-2"
-                role="radiogroup"
                 aria-label={t(language, "formDrinkTypeLabel")}
+                value={formState.drinkType}
+                onValueChange={(value) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    drinkType: value as FormState["drinkType"],
+                  }))
+                }
               >
                 {Object.entries(DRINK_TYPES).map(([key]) => {
-                  const selected = formState.drinkType === key;
                   const Icon = drinkIcons[key as keyof typeof drinkIcons];
 
                   return (
                     <OptionCard
                       key={key}
-                      selected={selected}
+                      value={key}
                       Icon={Icon}
                       label={
                         optionLabels.drinkType[
                           key as keyof typeof optionLabels.drinkType
                         ][language]
                       }
-                      onClick={() =>
-                        setFormState((prev) => ({
-                          ...prev,
-                          drinkType: key as FormState["drinkType"],
-                        }))
-                      }
                     />
                   );
                 })}
-              </div>
+              </RadioGroup>
             </div>
 
             <Field>
@@ -245,53 +230,57 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
 
             <div className="space-y-2">
               <FieldLabel>{t(language, "formMaterialLabel")}</FieldLabel>
-              <div
+              <RadioGroup
                 className="grid grid-cols-3 gap-2"
-                role="radiogroup"
                 aria-label={t(language, "formMaterialLabel")}
+                value={formState.material}
+                onValueChange={(value) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    material: value as FormState["material"],
+                  }))
+                }
               >
                 {Object.entries(CONTAINER_MATERIALS).map(([key]) => {
-                  const selected = formState.material === key;
                   const Icon = materialIcons[key as keyof typeof materialIcons];
 
                   return (
                     <OptionCard
                       key={key}
-                      selected={selected}
+                      value={key}
                       Icon={Icon}
                       label={
                         optionLabels.material[
                           key as keyof typeof optionLabels.material
                         ][language]
                       }
-                      onClick={() =>
-                        setFormState((prev) => ({
-                          ...prev,
-                          material: key as FormState["material"],
-                        }))
-                      }
                     />
                   );
                 })}
-              </div>
+              </RadioGroup>
             </div>
 
             <div className="space-y-2">
               <FieldLabel>{t(language, "formMethodLabel")}</FieldLabel>
-              <div
+              <RadioGroup
                 className="grid grid-cols-3 gap-2"
-                role="radiogroup"
                 aria-label={t(language, "formMethodLabel")}
                 aria-describedby="method-temperature-help"
+                value={formState.method}
+                onValueChange={(value) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    method: value as FormState["method"],
+                  }))
+                }
               >
                 {Object.entries(COOLING_METHODS).map(([key, { ambientTemp }]) => {
-                  const selected = formState.method === key;
                   const Icon = methodIcons[key as keyof typeof methodIcons];
 
                   return (
                     <OptionCard
                       key={key}
-                      selected={selected}
+                      value={key}
                       Icon={Icon}
                       detail={`${ambientTemp}°C`}
                       label={
@@ -299,16 +288,10 @@ export function CoolingForm({ onCalculate }: CoolingFormProps) {
                           key as keyof typeof optionLabels.method
                         ][language]
                       }
-                      onClick={() =>
-                        setFormState((prev) => ({
-                          ...prev,
-                          method: key as FormState["method"],
-                        }))
-                      }
                     />
                   );
                 })}
-              </div>
+              </RadioGroup>
               <FieldDescription
                 id="method-temperature-help"
                 className="text-xs text-muted-foreground"
