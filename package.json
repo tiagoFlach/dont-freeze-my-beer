@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "test": "tsc --module commonjs --moduleResolution node --target es2020 --esModuleInterop --skipLibCheck --outDir node_modules/.cache/cooling-tests lib/cooling.test.ts lib/i18n.test.ts && node node_modules/.cache/cooling-tests/cooling.test.js && node node_modules/.cache/cooling-tests/i18n.test.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

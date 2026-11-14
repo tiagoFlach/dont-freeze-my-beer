@@ -14,43 +14,86 @@ export const DRINK_TYPES = {
 };
 
 export const CONTAINER_MATERIALS = {
-    glass: { mult: 0.8 },
-    aluminum: { mult: 1.5 },
-    plastic: { mult: 0.7 },
+    glass: { mult: 0.95 },
+    aluminum: { mult: 1 },
+    plastic: { mult: 0.95 },
 };
 
 export const COOLING_METHODS = {
     fridge: { ambientTemp: 4 },
+    freezerCompartment: { ambientTemp: -6 },
     freezer: { ambientTemp: -18 },
 };
 
-// Simplified volume multiplier
-// Smaller volume = faster cooling = higher multiplier
+// Margin above the fridge ambient temperature used as its practical minimum,
+// since Newton's model only approaches the ambient temperature asymptotically.
+export const FRIDGE_MIN_MARGIN = 0.5;
+
+// SINTEF measured water cooling from 21°C to 5°C in a -20°C freezer.
+const FREEZER_REFERENCE = {
+    ambientTemp: -20,
+    initialTemp: 21,
+    targetTemp: 5,
+    canSize: 330,
+    canMinutes: 60,
+    bottleSize: 1500,
+    bottleMinutes: 90,
+};
+
+const FREEZER_REFERENCE_K = Math.log(
+    (FREEZER_REFERENCE.initialTemp - FREEZER_REFERENCE.ambientTemp) /
+    (FREEZER_REFERENCE.targetTemp - FREEZER_REFERENCE.ambientTemp),
+) / FREEZER_REFERENCE.canMinutes;
+
+// The two samples differ in material as well as size; the material factors are assumptions.
+const FREEZER_SIZE_EXPONENT = Math.log(
+    (FREEZER_REFERENCE.bottleMinutes / FREEZER_REFERENCE.canMinutes) *
+    (CONTAINER_MATERIALS.plastic.mult / CONTAINER_MATERIALS.aluminum.mult),
+) / Math.log(FREEZER_REFERENCE.bottleSize / FREEZER_REFERENCE.canSize);
+
+const FREEZER_CALIBRATION = {
+    size: 350,
+    initialTemp: 25,
+    targetTemp: 4,
+    minutes: 60,
+};
+
+const CALIBRATION_FACTOR = (
+    Math.log(
+        (FREEZER_CALIBRATION.initialTemp - COOLING_METHODS.freezer.ambientTemp) /
+        (FREEZER_CALIBRATION.targetTemp - COOLING_METHODS.freezer.ambientTemp),
+    ) / FREEZER_CALIBRATION.minutes
+) / (
+    FREEZER_REFERENCE_K *
+    Math.pow(FREEZER_REFERENCE.canSize / FREEZER_CALIBRATION.size, FREEZER_SIZE_EXPONENT)
+);
+
+// Available container sizes in milliliters
 export const CONTAINER_SIZES = {
     beer: {
-        "330": { mult: 1.12 },
-        "350": { mult: 1.1 },
-        "473": { mult: 1.05 },
-        "500": { mult: 1.02 },
-        "750": { mult: 0.9 },
-        "1000": { mult: 0.8 },
-        "1500": { mult: 0.7 },
-        "2000": { mult: 0.6 },
+        "330": true,
+        "350": true,
+        "473": true,
+        "500": true,
+        "750": true,
+        "1000": true,
+        "1500": true,
+        "2000": true,
     },
     wine: {
-        "350": { mult: 1.1 },
-        "473": { mult: 1.05 },
-        "500": { mult: 1.02 },
-        "750": { mult: 0.9 },
-        "1000": { mult: 0.8 },
-        "1500": { mult: 0.7 },
+        "350": true,
+        "473": true,
+        "500": true,
+        "750": true,
+        "1000": true,
+        "1500": true,
     },
     spirits: {
-        "350": { mult: 1.1 },
-        "500": { mult: 1.02 },
-        "750": { mult: 0.9 },
-        "1000": { mult: 0.8 },
-        "1500": { mult: 0.7 },
+        "350": true,
+        "500": true,
+        "750": true,
+        "1000": true,
+        "1500": true,
     },
 };
 
@@ -64,17 +107,17 @@ export interface CoolingParams {
 
 export const calculateK = (params: CoolingParams) => {
     const baseK = DRINK_TYPES[params.drinkType].kBase;
-    const materialMult = CONTAINER_MATERIALS[params.material].mult;
+    const material = CONTAINER_MATERIALS[params.material];
+    const volume = Number(params.size);
 
-    // Get size multiplier safely
-    const drinkSizes = CONTAINER_SIZES[params.drinkType] as Record<string, { mult: number }>;
-    const sizeData = drinkSizes[params.size];
+    if (!Number.isFinite(volume) || volume <= 0) {
+        throw new RangeError("Container size must be a positive number");
+    }
 
-    // Fallback if size not found (shouldn't happen with correct form)
-    const sizeMult = sizeData ? sizeData.mult : 1.0;
-
-    // k is higher (faster cooling) for aluminum and smaller containers
-    return baseK * materialMult * sizeMult;
+    return FREEZER_REFERENCE_K * CALIBRATION_FACTOR *
+        (baseK / DRINK_TYPES.beer.kBase) *
+        (material.mult / CONTAINER_MATERIALS.aluminum.mult) *
+        Math.pow(FREEZER_REFERENCE.canSize / volume, FREEZER_SIZE_EXPONENT);
 };
 
 export const getTemperatureAtTime = (t: number, params: CoolingParams) => {
@@ -90,7 +133,10 @@ export const getTimeToTarget = (targetTemp: number, params: CoolingParams) => {
     const T0 = params.initialTemp;
     const k = calculateK(params);
 
-    // If target temperature is lower than ambient, it will never reach it
+    // No additional cooling is needed when the drink is already at or below the target.
+    if (T0 <= targetTemp) return 0;
+
+    // A drink above the target cannot reach a temperature at or below ambient.
     if (targetTemp <= Ts) return Infinity;
 
     // T = Ts + (T0 - Ts)e^-kt
@@ -108,13 +154,18 @@ export const generateCoolingData = (params: CoolingParams) => {
 
     const isTimeFinite = Number.isFinite(timeToIdeal);
 
-    // Generate data points up to 20% past the ideal time, or at least 60 mins
-    const maxTime = isTimeFinite ? Math.max(60, timeToIdeal * 1.2) : 60;
+    const chartTime = isTimeFinite
+        ? timeToIdeal
+        : params.method === "fridge"
+            ? getTimeToTarget(COOLING_METHODS.fridge.ambientTemp + FRIDGE_MIN_MARGIN, params)
+            : 0;
+
+    // Generate data points up to 20% past the relevant time, or at least 60 mins.
+    const maxTime = Math.max(60, chartTime * 1.2);
     const data = [];
     const steps = 20;
-    const interval = maxTime / steps;
-
-    for (let t = 0; t <= maxTime; t += interval) {
+    for (let index = 0; index <= steps; index++) {
+        const t = maxTime * index / steps;
         data.push({
             time: Math.round(t),
             temp: parseFloat(getTemperatureAtTime(t, params).toFixed(1)),

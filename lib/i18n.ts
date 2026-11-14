@@ -20,6 +20,8 @@ type TranslationKey =
     | "chartYAxis"
     | "chartIdealLabel"
     | "chartTooltipMin"
+    | "chartAlreadyCool"
+    | "chartUnreachable"
     | "formDrinkTypeLabel"
     | "formDrinkTypePlaceholder"
     | "formInitialTempLabel"
@@ -27,6 +29,8 @@ type TranslationKey =
     | "formSizePlaceholder"
     | "formMaterialLabel"
     | "formMethodLabel"
+    | "formMethodTempNote"
+    | "formMethodTempHelp"
     | "languageSelectLabel"
     | "languageSelectPlaceholder"
     | "themeToggleLabel"
@@ -37,22 +41,27 @@ type TranslationKey =
     | "formulaDescriptionT"
     | "formulaDescriptionTs"
     | "formulaDescriptionTk"
+    | "formulaAssumptions"
+    | "formulaEstimate"
+    | "formulaSource"
+    | "freezerSource"
     | "idealTempsTitle"
     | "freezeAlertTitle"
     | "freezeAlertDescription"
-    | "freezeNeverLabel";
+    | "freezeNeverLabel"
+    | "fridgeMinTimeLabel";
 
 const translations: Record<Language, Record<TranslationKey, string>> = {
     en: {
         appName: "Don't Freeze My Beer",
         metaTitle: "Don't Freeze My Beer | Perfect chill time calculator",
         metaDescription:
-            "Find the exact time for your drink to reach the ideal temperature. Physics-based cooling calculator for beer, wine, and spirits.",
+            "Estimate the time for your drink to reach the ideal temperature with a simplified cooling model.",
         metaKeywords:
             "beer cooling calculator, drink temperature, chill time, ideal temperature, Newton cooling, freezer time",
         heroTitle: "Don't Freeze Your Beer",
         heroSubtitle:
-            "Calculate the exact time for your drink to reach the ideal temperature. Using real physics to guarantee the perfect sip.",
+            "Estimate the time for your drink to reach the ideal temperature using a simplified cooling model.",
         sectionSettings: "Settings",
         sectionResult: "Result",
         estimatedTime: "Estimated Time",
@@ -66,39 +75,52 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         chartYAxis: "Temp (°C)",
         chartIdealLabel: "Ideal",
         chartTooltipMin: "min",
+        chartAlreadyCool: "Already at or below the target temperature.",
+        chartUnreachable:
+            "The model cannot reach the target because it is at or below the surrounding temperature.",
         formDrinkTypeLabel: "Drink Type",
         formDrinkTypePlaceholder: "Select the drink",
-        formInitialTempLabel: "Room Temperature",
+        formInitialTempLabel: "Initial Drink Temperature",
         formSizeLabel: "Container Size",
         formSizePlaceholder: "Select the size",
         formMaterialLabel: "Container Material",
         formMethodLabel: "Cooling Method",
+        formMethodTempNote: "Note:",
+        formMethodTempHelp: "Reference temperatures may vary depending on the appliance.",
         languageSelectLabel: "Select language",
         languageSelectPlaceholder: "Language",
         themeToggleLabel: "Toggle theme",
         githubLabel: "Open GitHub",
         minutesShort: "min",
         formulaTitle: "How it works",
-        formulaSubtitle: "The science behind the perfect temperature",
+        formulaSubtitle: "Simplified model and its limitations",
         formulaDescriptionT: "T(t) = Temperature at time t",
         formulaDescriptionTs:
-            "T_s = Ambient temperature (fridge/freezer). The colder it is, the faster the drink cools.",
-        formulaDescriptionTk: "k = Cooling constant (material × size)",
+            "T_s = Surrounding temperature (fridge, freezer, or freezer compartment), assumed constant.",
+        formulaDescriptionTk: "k = Estimated cooling constant (drink, material, and size)",
+        formulaAssumptions:
+            "The model assumes a constant surrounding temperature and a uniform drink temperature.",
+        formulaEstimate:
+            "All methods use the same estimated rate with different surrounding temperatures. The rate starts from a test with water and is adjusted to a 60-minute reference for a 350 ml aluminum can cooling from 25°C to 4°C in a freezer. Other estimates are unvalidated extrapolations; times can vary with the drink and equipment.",
+        formulaSource: "Formula source: Newton's law of cooling (OpenStax)",
+        freezerSource: "Freezer experiment: SINTEF (in English)",
         idealTempsTitle: "Ideal Temperatures",
         freezeAlertTitle: "Freezing Alert",
-        freezeAlertDescription: "May freeze in {time} min",
+        freezeAlertDescription:
+            "Estimated time to 0°C: {time} min; this is not a safe limit. Check regularly: the drink may freeze before the estimated cooling time.",
         freezeNeverLabel: "Not expected to freeze",
+        fridgeMinTimeLabel: "Time to reach {temp}°C",
     },
     pt: {
         appName: "Don't Freeze My Beer",
         metaTitle: "Don't Freeze My Beer | Calculadora do tempo ideal de gelar",
         metaDescription:
-            "Descubra o tempo exato para sua bebida chegar na temperatura ideal. Calculadora de resfriamento baseada em fisica para cerveja, vinho e destilados.",
+            "Estime o tempo para sua bebida chegar à temperatura ideal com um modelo simplificado de resfriamento.",
         metaKeywords:
             "tempo para gelar cerveja, temperatura da bebida, calculadora de resfriamento, temperatura ideal, lei de Newton",
         heroTitle: "Não Congele Sua Cerveja",
         heroSubtitle:
-            "Calcule o tempo exato para sua bebida chegar na temperatura ideal. Utilizando física real para garantir o gole perfeito.",
+            "Estime o tempo para sua bebida chegar à temperatura ideal usando um modelo simplificado de resfriamento.",
         sectionSettings: "Configurações",
         sectionResult: "Resultado",
         estimatedTime: "Tempo Estimado",
@@ -112,39 +134,53 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         chartYAxis: "Temp (°C)",
         chartIdealLabel: "Ideal",
         chartTooltipMin: "min",
+        chartAlreadyCool: "Já está na temperatura alvo ou abaixo dela.",
+        chartUnreachable:
+            "O modelo não atinge a temperatura alvo porque ela é igual ou inferior à temperatura do ambiente.",
         formDrinkTypeLabel: "Tipo de Bebida",
         formDrinkTypePlaceholder: "Selecione a bebida",
-        formInitialTempLabel: "Temperatura Ambiente",
+        formInitialTempLabel: "Temperatura Inicial da Bebida",
         formSizeLabel: "Tamanho do Recipiente",
         formSizePlaceholder: "Selecione o tamanho",
         formMaterialLabel: "Material do Recipiente",
         formMethodLabel: "Método de Resfriamento",
+        formMethodTempNote: "Observação:",
+        formMethodTempHelp: "Temperaturas de referência; podem variar conforme o aparelho.",
         languageSelectLabel: "Selecionar idioma",
         languageSelectPlaceholder: "Idioma",
         themeToggleLabel: "Alternar tema",
         githubLabel: "Abrir GitHub",
         minutesShort: "min",
         formulaTitle: "Como funciona",
-        formulaSubtitle: "A ciência por trás da temperatura perfeita",
+        formulaSubtitle: "Modelo simplificado e suas limitações",
         formulaDescriptionT: "T(t) = Temperatura no tempo t",
         formulaDescriptionTs:
-            "T_s = Temperatura ambiente (geladeira/freezer). Quanto mais fria, mais rápido a bebida esfria.",
-        formulaDescriptionTk: "k = Constante de resfriamento (material × tamanho)",
+            "T_s = Temperatura ambiente (geladeira, freezer ou congelador), considerada constante.",
+        formulaDescriptionTk:
+            "k = Constante de resfriamento estimada (bebida, material e tamanho)",
+        formulaAssumptions:
+            "O modelo supõe temperatura ambiente constante e temperatura uniforme na bebida.",
+        formulaEstimate:
+            "Todos os métodos usam a mesma taxa estimada, com temperaturas ambientes diferentes. A taxa parte de um teste com água e foi ajustada à referência de 60 min para uma lata de alumínio de 350 ml, de 25°C a 4°C no freezer. As demais estimativas são extrapolações não validadas; os tempos podem variar conforme a bebida e o equipamento.",
+        formulaSource: "Fonte da fórmula: Lei do Resfriamento de Newton (OpenStax, em inglês)",
+        freezerSource: "Experimento no freezer: SINTEF (em inglês)",
         idealTempsTitle: "Temperaturas Ideais",
         freezeAlertTitle: "Alerta de Congelamento",
-        freezeAlertDescription: "Pode congelar em {time} min",
+        freezeAlertDescription:
+            "Tempo estimado até 0°C: {time} min; não é um limite seguro. Confira regularmente: a bebida pode congelar antes mesmo do tempo estimado para gelar.",
         freezeNeverLabel: "Nao deve congelar",
+        fridgeMinTimeLabel: "Tempo até {temp}°C",
     },
     es: {
         appName: "Don't Freeze My Beer",
         metaTitle: "Don't Freeze My Beer | Calculadora de enfriamiento ideal",
         metaDescription:
-            "Descubre el tiempo exacto para que tu bebida llegue a la temperatura ideal. Calculadora basada en fisica para cerveza, vino y destilados.",
+            "Estima el tiempo para que tu bebida alcance la temperatura ideal con un modelo simplificado de enfriamiento.",
         metaKeywords:
             "tiempo para enfriar cerveza, temperatura de bebida, calculadora de enfriamiento, temperatura ideal, ley de Newton",
         heroTitle: "No Congeles Tu Cerveza",
         heroSubtitle:
-            "Calcula el tiempo exacto para que tu bebida llegue a la temperatura ideal. Usando física real para garantizar el sorbo perfecto.",
+            "Estima el tiempo para que tu bebida alcance la temperatura ideal usando un modelo simplificado de enfriamiento.",
         sectionSettings: "Configuración",
         sectionResult: "Resultado",
         estimatedTime: "Tiempo Estimado",
@@ -158,28 +194,42 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
         chartYAxis: "Temp (°C)",
         chartIdealLabel: "Ideal",
         chartTooltipMin: "min",
+        chartAlreadyCool: "Ya está en la temperatura objetivo o por debajo de ella.",
+        chartUnreachable:
+            "El modelo no alcanza la temperatura objetivo porque es igual o inferior a la temperatura ambiente.",
         formDrinkTypeLabel: "Tipo de Bebida",
         formDrinkTypePlaceholder: "Selecciona la bebida",
-        formInitialTempLabel: "Temperatura Ambiente",
+        formInitialTempLabel: "Temperatura Inicial de la Bebida",
         formSizeLabel: "Tamano del Recipiente",
         formSizePlaceholder: "Selecciona el tamano",
         formMaterialLabel: "Material del Recipiente",
         formMethodLabel: "Metodo de Enfriamiento",
+        formMethodTempNote: "Nota:",
+        formMethodTempHelp: "Las temperaturas de referencia pueden variar según el equipo.",
         languageSelectLabel: "Seleccionar idioma",
         languageSelectPlaceholder: "Idioma",
         themeToggleLabel: "Cambiar tema",
         githubLabel: "Abrir GitHub",
         minutesShort: "min",
         formulaTitle: "Cómo funciona",
-        formulaSubtitle: "La ciencia detrás de la temperatura perfecta",
+        formulaSubtitle: "Modelo simplificado y sus limitaciones",
         formulaDescriptionT: "T(t) = Temperatura en el tiempo t",
         formulaDescriptionTs:
-            "T_s = Temperatura ambiente (nevera/congelador). Cuanto mas fria, mas rapido se enfria la bebida.",
-        formulaDescriptionTk: "k = Constante de enfriamiento (material × tamaño)",
+            "T_s = Temperatura ambiente (nevera, congelador o compartimento congelador), considerada constante.",
+        formulaDescriptionTk:
+            "k = Constante de enfriamiento estimada (bebida, material y tamaño)",
+        formulaAssumptions:
+            "El modelo supone una temperatura ambiente constante y una temperatura uniforme en la bebida.",
+        formulaEstimate:
+            "Todos los métodos usan la misma tasa estimada con distintas temperaturas ambiente. La tasa parte de una prueba con agua y se ajusta a una referencia de 60 min para una lata de aluminio de 350 ml, de 25°C a 4°C en el congelador. Las demás estimaciones son extrapolaciones no validadas; los tiempos pueden variar según la bebida y el equipo.",
+        formulaSource: "Fuente de la fórmula: ley de enfriamiento de Newton (OpenStax, en inglés)",
+        freezerSource: "Experimento en congelador: SINTEF (en inglés)",
         idealTempsTitle: "Temperaturas Ideales",
         freezeAlertTitle: "Alerta de Congelacion",
-        freezeAlertDescription: "Puede congelarse en {time} min",
+        freezeAlertDescription:
+            "Tiempo estimado hasta 0°C: {time} min; no es un límite seguro. Compruébala con frecuencia: puede congelarse antes incluso del tiempo estimado de enfriamiento.",
         freezeNeverLabel: "No se espera que congele",
+        fridgeMinTimeLabel: "Tiempo hasta {temp}°C",
     },
 };
 
@@ -209,6 +259,7 @@ export const optionLabels = {
     method: {
         fridge: { en: "Fridge", pt: "Geladeira", es: "Nevera" },
         freezer: { en: "Freezer", pt: "Freezer", es: "Congelador" },
+        freezerCompartment: { en: "Freezer compartment", pt: "Congelador", es: "Compartimento congelador" },
     },
 } as const;
 
