@@ -25,7 +25,7 @@ export function ResultStatsCard({
   return (
     <Card>
       <CardHeader className="items-center text-center">
-        <CardDescription className="text-slate-400 text-sm uppercase tracking-wider">
+        <CardDescription className="text-muted-foreground text-sm uppercase tracking-wider">
           {label}
         </CardDescription>
         <CardTitle
@@ -35,7 +35,7 @@ export function ResultStatsCard({
           <span className="text-xl ml-1">{unit}</span>
         </CardTitle>
         {note && (
-          <CardDescription className="text-slate-400 text-sm">
+          <CardDescription className="text-muted-foreground text-sm">
             {note}
           </CardDescription>
         )}

@@ -33,7 +33,7 @@ export default function Navbar() {
   return (
     <header>
       <div className="border-b text-primary">
-        <div className="px-6 py-3 flex mx-auto max-w-5xl flex-wrap items-center gap-x-6">
+        <div className="px-6 py-3 flex mx-auto max-w-7xl flex-wrap items-center gap-x-6">
           <div className="text-xl font-bold leading-tight">
             {t(language, "appName")}
           </div>

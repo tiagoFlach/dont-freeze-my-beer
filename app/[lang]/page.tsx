@@ -87,12 +87,12 @@ export default function Home() {
   }, [isFreezingTimeFinite, showFreezeAlert]);
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-slate-100 to-white text-foreground dark:from-blue-900 dark:via-slate-900 dark:to-black px-3 py-6 lg:p-6 mb-16 font-[family-name:var(--font-geist-sans)]">
+    <main className="mb-16 min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-100 via-background to-background px-3 py-6 font-[family-name:var(--font-geist-sans)] text-foreground dark:from-blue-950 dark:via-background dark:to-background lg:p-6">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Hero Section */}
         <section className="text-center space-y-4 pt-8 mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
-          <div className="inline-flex items-center justify-center mb-4 animate-spin [animation-duration:48s] will-change-transform">
-            <Snowflake className="w-16 h-16 animate-[snowflake-color_25s_ease-in-out_infinite]" />
+          <div className="inline-flex items-center justify-center mb-4 animate-spin [animation-duration:48s] motion-reduce:animate-none">
+            <Snowflake className="w-16 h-16 animate-[snowflake-color_25s_ease-in-out_infinite] motion-reduce:animate-none" />
           </div>
           <h1 className="text-5xl md:text-7xl leading-[1.15] font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-900 to-cyan-800 dark:from-blue-400 dark:to-white">
             {t(language, "heroTitle")}
@@ -211,8 +211,14 @@ export default function Home() {
             )}
 
             {!coolingResult && (
-              <div className="h-full flex items-center justify-center min-h-[400px] border-2 border-dashed border-slate-800 rounded-2xl text-slate-600">
-                {t(language, "waitingParams")}
+              <div className="flex min-h-[400px] flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-border bg-card/40 px-6 text-center text-muted-foreground">
+                <Snowflake
+                  className="h-10 w-10 text-primary/70"
+                  aria-hidden="true"
+                />
+                <p className="max-w-sm text-sm leading-relaxed">
+                  {t(language, "waitingParams")}
+                </p>
               </div>
             )}
           </div>

@@ -105,7 +105,7 @@ export default async function LanguageLayout({
         >
           <LanguageProvider defaultLanguage={language}>
             <Navbar />
-            <div className="mx-auto max-w-5xl">{children}</div>
+            {children}
           </LanguageProvider>
         </ThemeProvider>
       </body>
