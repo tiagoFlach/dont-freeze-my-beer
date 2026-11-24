@@ -96,7 +96,7 @@ export default async function LanguageLayout({
 
   return (
     <html lang={language} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
